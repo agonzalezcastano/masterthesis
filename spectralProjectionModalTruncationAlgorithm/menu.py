@@ -42,15 +42,15 @@ class Menu:
         self.time_step = input("Enter the value for the time step: ")
 
     def option_4(self):
-        self.A, self.B, self.C, self.D = setSystemExample(self.time_step)
+        self.A, self.B, self.C, self.D = systemExample.setSystemExample(self.time_step)
 
     def option_5(self):
-        self.A, self.B, self.C, self.D = setSystemNewEngland(self.time_step)
+        self.A, self.B, self.C, self.D = systemNewEngland.setSystemNewEngland(self.time_step)
 
     def option_6(self):
         print("The alpha is " + self.alpha)
         
-        Gr = spectralProjectionModalTruncationAlgorithm(self.A, self.B, self.C, self.D, self.alpha)
+        Gr = spectralProjectionModalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
         print("The reduced system is: " + Gr)
 
     def option_e(self):

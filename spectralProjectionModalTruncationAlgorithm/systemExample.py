@@ -8,9 +8,11 @@ def setSystemExample(time_step):
     d = np.array([[0]])
 
     system_lti = signal.StateSpace(a, b, c, d)
-    print("system continuous: " + system_lti)
+    print("system linear: ")
+    print(system_lti)
     system_discrete = system_lti.to_discrete(time_step)
-    print("system discrete: " + system_discrete)
+    print("system discrete: ")
+    print(system_discrete)
     return system_discrete.A, system_discrete.B, system_discrete.C, system_discrete.D
     
     

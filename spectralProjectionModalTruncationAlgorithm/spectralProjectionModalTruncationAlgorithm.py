@@ -1,27 +1,32 @@
+import spectralProjection
+import blockTriangular
+import beta
+import sylvesterEquation
+import reducedSystem
+import rankRevealingQR
+
 import numpy as np
 import scipy as sci
 
-def spectralProjectionModalTruncationAlgorithm(A, B, C, D, alpha):
-    
-    TF = sci.signal.TransferFunction()
+def algorithm(A, B, C, D, alpha):
     
     I = np.identity(A.shape[0])
 
-    P = calculateSpectralProjection(A, I, alpha)
-    Q = calculateRankRevealingQ(P)
-    A11, A12, A22 = computeBlockTriangularA(A, Q)
-    B1, B2 = computeBlockTriangularA(B, Q)
-    C1, C2 = computeBlockTriangularA(C, Q)
+    P = spectralProjection.calculateSpectralProjection(A, I, alpha)
+    Q = rankRevealingQR.calculateRankRevealingQ(P)
+    A_11, A_12, A_21, A_22 = blockTriangular.computeBlockTriangularA(A, Q)
+    B_1, B_2 = blockTriangular.computeBlockTriangularA(B, Q)
+    C_1, C_2 = blockTriangular.computeBlockTriangularA(C, Q)
     
-    beta = computeBeta(A)
+    beta_param = beta.computeBeta(A)
     
-    X = solveSylvesterEquation(A, beta, I)
+    X = sylvesterEquation.solveSylvesterEquation(A, beta_param, I)
     
-    Ar = A11
-    Br = B1 - X.dot(B2)
-    Cr = C1
-    Dr = D
+    A_r = A_11
+    B_r = B_1 - X.dot(B_2)
+    C_r = C_1
+    D_r = D
     
-    Gr = createReducedSystem(Ar, Br, Cr, Dr)
+    G_r = reducedSystem.createReducedSystem(A_r, B_r, C_r, D_r)
     
-    return Gr
+    return G_r
