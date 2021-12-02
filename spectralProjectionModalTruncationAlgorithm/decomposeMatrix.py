@@ -5,12 +5,12 @@ def decomposeMatrixInFour(A):
     heigh_2 = heigh/2
     weight_2 = weight/2
    
-    A11 = A[:heigh_2, :weight_2]
-    A12 = A[(heigh_2 + 1):, :weight_2]
-    A21 = A[:heigh_2, (weight_2 + 1):]
-    A22 = A[(heigh_2 + 1):, (weight_2 + 1):]
+    A_11 = A[:heigh_2, :weight_2]
+    A_12 = A[(heigh_2 + 1):, :weight_2]
+    A_21 = A[:heigh_2, (weight_2 + 1):]
+    A_22 = A[(heigh_2 + 1):, (weight_2 + 1):]
 
-    return A11, A12, A21, A22
+    return A_11, A_12, A_21, A_22
 
 
 def decomposeMatrixInTwo(A):
@@ -18,7 +18,7 @@ def decomposeMatrixInTwo(A):
     weight = A.shape[1]
     weight_2 = weight/2
     
-    A1 = A[:, :weight_2]
-    A2 = A[:, (weight_2 + 1):]
+    A_1 = A[:, :weight_2]
+    A_2 = A[:, (weight_2 + 1):]
 
-    return A1, A2
+    return A_1, A_2

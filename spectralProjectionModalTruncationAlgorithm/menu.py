@@ -1,6 +1,6 @@
 import systemNewEngland
 import systemExample
-import spectralProjectionModalTruncationAlgorithm
+import spectralProjectionModalTruncation
 
 class Menu:
     def __init__(self):
@@ -20,8 +20,8 @@ class Menu:
 
     def print_menu(self):
         print(30 * "-", "MENU", 30 * "-")
-        print("1. Set the the stability margin (alpha)")
-        print("2. Set the error tolerance ()")
+        print("1. Set the stability margin (alpha)")
+        print("2. Set the error tolerance (e)")
         print("3. Set the time step lenght value (t)")
         print("4. Set the system")
         print("5. Set the New England system")
@@ -36,7 +36,7 @@ class Menu:
         self.alpha = input("Enter the value for the stability margin (alpha): ")
 
     def option_2(self):
-        self.error_tolerance = input("Enter the value for the error tolerance (): ")
+        self.error_tolerance = input("Enter the value for the error tolerance (e): ")
 
     def option_3(self):
         self.time_step = input("Enter the value for the time step: ")
@@ -50,8 +50,8 @@ class Menu:
     def option_6(self):
         print("The alpha is " + self.alpha)
         
-        Gr = spectralProjectionModalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
-        print("The reduced system is: " + Gr)
+        G_r = spectralProjectionModalTruncation.algorithm(self.A, self.B, self.C, self.D, self.alpha)
+        print("The reduced system is: " + G_r)
 
     def option_e(self):
         print("Bye!")
