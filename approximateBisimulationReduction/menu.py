@@ -61,7 +61,7 @@ class Menu:
         print("The reduced-order is " + self.reduced_order)
         
         G_r = approximateBisimulation.algorithm(
-            self.A, self.B, self.C, self.D, self.reduced_order, self.time_step, self.error_tolerance)
+            self.A, self.B, self.C, self.D, self.reduced_order, self.time_step, self.x_max, self.delta_max, self.error_tolerance)
         print("The reduced system is: " + G_r)
 
     def option_e(self):
