@@ -1,23 +1,27 @@
 import numpy as np
-import scipy as sci
+from numpy.linalg import linalg
+import scipy.linalg as scilinalg
 
-def calculateProjectionMatrixQ(C):
+def calculateProjectionMatrixQ(A: np.ndarray, C: np.ndarray):
     trasC = C.transpose()
     T = -trasC.dot(C)
-    Q = sci.linalg.solve_
-    return Q, T
+    trasA = A.transpose()
+    Q = scilinalg.solve_continues_lyapunov(trasA, T)
+    return Q
 
-def calculateProjectionMatrixV(A, B, interpolation_points):
+def calculateProjectionMatrixV(A: np.ndarray, B: np.ndarray, interpolation_points: np.ndarray):
     A_height = A.shape[0]
     A_weight = A.shape[1]
+
     I = np.identity(A_height)
-    E = interpolation_points.dot(I)-A
-    F = np.linalg.inv(E)
-    V = np.imag(F.dot(B))
+    E = np.dot(interpolation_points, I) - A
+    F = linalg.inv(E)
+    V = np.imag(np.dot(F,B))
+
     return V
 
-def calculateProjectionMatrixZ(Q, V):
+def calculateProjectionMatrixZ(Q: np.ndarray, V: np.ndarray):
     trasV = V.transpose()
-    inv = np.linalg.inv(trasV.dot(Q).dot(V))
+    inv = linalg.inv(trasV.dot(Q).dot(V))
     Z = Q.dot(V).dot(inv)
     return Z

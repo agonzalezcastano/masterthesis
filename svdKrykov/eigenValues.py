@@ -1,4 +1,5 @@
 import numpy.linalg as linalg
+import numpy as np
 
 def calculateEigenvalues(A):
     eigen_values = linalg.eig(A)
@@ -6,8 +7,8 @@ def calculateEigenvalues(A):
 
 def calculateInitialEigenvalues(A, k):
     eigen_values = calculateEigenvalues(A)
-    real = eigen_values.real
-    imag = eigen_values.imag
+    real = np.real(eigen_values)
+    imag = np.imag(eigen_values)
     
     min_real = min(real)
     max_real = max(real)

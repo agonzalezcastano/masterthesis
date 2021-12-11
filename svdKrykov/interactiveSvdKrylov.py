@@ -4,7 +4,7 @@ import reducedSystem
 import reducedMatrix
 import interpolationPoints
 
-def algorithm(A, B, C, D, k, t, error_tolerance):
+def algorithm(A, B, C, D, k, error_tolerance):
     init_eigen_values = eigenValues.calculateInitialEigenvalues(A, k)
     V = projectionMatrix.calculateProjectionMatrixV(A, B, init_eigen_values)
     Q = projectionMatrix.calculateProjectionMatrixQ(A, C)
