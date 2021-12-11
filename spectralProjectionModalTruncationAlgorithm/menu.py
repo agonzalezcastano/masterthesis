@@ -1,6 +1,6 @@
 import systemNewEngland
 import systemExample
-import spectralProjectionModalTruncation
+import modalTruncationAlgorithm
 
 class Menu:
     def __init__(self):
@@ -50,8 +50,8 @@ class Menu:
     def option_6(self):
         print("The alpha is " + self.alpha)
         
-        G_r = spectralProjectionModalTruncation.algorithm(self.A, self.B, self.C, self.D, self.alpha)
-        print("The reduced system is: " + G_r)
+        Gr = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
+        print("The reduced system is: " + Gr)
 
     def option_e(self):
         print("Bye!")
