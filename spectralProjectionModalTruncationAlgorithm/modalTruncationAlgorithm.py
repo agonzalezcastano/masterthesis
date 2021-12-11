@@ -6,9 +6,8 @@ import reducedSystem
 import rankRevealingQR
 
 import numpy as np
-import scipy as sci
 
-def algorithm(A, B, C, D, alpha):
+def algorithm(A: np.ndarray, B: np.ndarray, C: np.ndarray, D: np.ndarray, alpha: np.ndarray):
     
     I = np.identity(A.shape[0])
 
@@ -20,7 +19,7 @@ def algorithm(A, B, C, D, alpha):
     
     beta_param = beta.computeBeta(A)
     
-    X = sylvesterEquation.solveSylvesterEquation(A, beta_param, I)
+    X: np.ndarray = sylvesterEquation.solveSylvesterEquation(A, beta_param, I)
     
     A_r = A_11
     B_r = B_1 - X.dot(B_2)

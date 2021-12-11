@@ -1,4 +1,6 @@
-def decomposeMatrixInFour(A):
+from numpy import ndarray
+
+def decomposeMatrixInFour(A: ndarray):
 
     heigh = A.shape[0]
     weight = A.shape[1]
@@ -13,7 +15,7 @@ def decomposeMatrixInFour(A):
     return A11, A12, A21, A22
 
 
-def decomposeMatrixInTwo(A):
+def decomposeMatrixInTwo(A: ndarray):
 
     weight = A.shape[1]
     weight_2 = weight/2
