@@ -7,24 +7,25 @@ import accuracy
 def algorithm(f: function, g: function, inputs, initial_states, reduced_order, states_max, delta_max, error_tolerance):
     A, B, C, inputs, states = linearSystem.systemLinearization(f, g, initial_states, reduced_order)
     G_1 = LinearSystem(A, B, C, inputs, states)
-    G_1_stable: LinearSystem = stableSystem(G_1, reduced_order)
-    G_r_2: LinearSystem = reduction(G_1_stable)
+    G_1_stable: LinearSystem = extractStableSystem(G_1, reduced_order)
+    H: np.ndarray = calculateSurjectiveMap()
+    G_r_2: LinearSystem = reduction(G_1_stable, H)
     states_r = linearSystem.solveLinearSystem(G_r_2)
 
     while  accuracy.isAccuracyCriterionSatisfied(states_r, states_max):
         A, B, C, inputs, states = linearSystem.systemLinearization(f, g, initial_states, reduced_order)
         G_1 = LinearSystem(A, B, C, inputs, states)
-        G_1_stable: LinearSystem = stableSystem(G_1, reduced_order)
-        G_r_2: LinearSystem = reduction(G_1_stable)
+        G_1_stable: LinearSystem = extractStableSystem(G_1, reduced_order)
+        H: np.ndarray = calculateSurjectiveMap()
+        G_r_2: LinearSystem = reduction(G_1_stable, H)
         states_r = linearSystem.solveLinearSystem(G_r_2)
         p_r_2 = np.dot(G_r_2.C, states_r)
         if accuracy.isErrorBoundSatisfied(G_r_2.C, states_r, G_1_stable.C, G_1_stable.initial_states, error_tolerance):
             return G_r_2, p_r_2
         else:
             reduced_order = reduced_order + 1
-    
 
-def stableSystem(G : LinearSystem, reduced_order):
+def extractStableSystem(G : LinearSystem, reduced_order):
     A  = G.A
     B  = G.B
     C  = G.C
@@ -52,27 +53,36 @@ def stableSystem(G : LinearSystem, reduced_order):
 
     return G_stable
 
-def reduction(G_stable: LinearSystem, H):
+def reduction(G_stable: LinearSystem, H: np.ndarray):
     H_inv = linalg.inv(H)
     A_r = np.dot(np.dot(H, G_stable.A), H_inv)
     B_r = np.dot(H, G_stable.B)
     C_r = np.dot(G_stable.C, H_inv)
 
-    inputs = 
-    states = 
+    inputs = np.dot(H, G_stable.inputs)
+    states = G_stable.initial_states
 
     G_r = LinearSystem(A_r, B_r, C_r, inputs, states)
     return G_r
 
 def solveLyapunovEquations(A, C):
     eigenvalue_min = min(- np.real(linalg.eig(A)))/1.01
+    A_identity = np.identity(np.size(A))
 
     CC= np.dot(np.transpose(C), C)
     Q = (np.transpose(A) +
-        np.dot(eigenvalue_min * np.identity(np.size(A))) * CC) + np.dot(CC, (A + eigenvalue_min * np.identity(np.size(A))))
+        np.dot(eigenvalue_min * A_identity) * CC) + np.dot(CC, (A + eigenvalue_min * A_identity))
     [V, D] = linalg.eig(Q)
     D = np.diag(np.dot((np.diag(D)>0), np.diag(D)))
     Q = np.dot(np.dot(V, D), np.transpose(V))
-    M = CC + linalg.solve_continuous_lyapunov(np.transpose(A) + eigenvalue_min * np.identity(np.size(A)), Q)
+    M = CC + linalg.solve_continuous_lyapunov(np.transpose(A) + eigenvalue_min * A_identity, Q)
 
     return M
+
+def calculateBisimulationFunction()
+    Vs =
+    return Vs
+
+def calculateSurjectiveMap()
+    H = 
+    return H

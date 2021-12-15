@@ -1,19 +1,22 @@
-import numpy as np
-from scipy import signal
+import pandapower as pn
+import pandapower.estimation as estimation
+import pandapower.networks as pnetwork
+import pandas as pd
 
-def setSystemExample(time_step):
-    a = np.array([[0, 1], [0, 0]])
-    b = np.array([[0], [1]])
-    c = np.array([[1, 0]])
-    d = np.array([[0]])
+def setGBSystemExample(time_step):
+    net = pnetwork.GBnetwork()
+    success = estimation.estimate(net, init="flat")
+    print("NET: " + success)
+    return success
+    
+def set30BusSystemExample():
+    net = pnetwork.case_ieee30()
+    success = estimation.estimate(net, init="flat")
+    print("NET: " + success)
+    return success
 
-    system_lti = signal.StateSpace(a, b, c, d)
-    print("system linear: ")
-    print(system_lti)
-    system_discrete = system_lti.to_discrete(time_step)
-    print("system discrete: ")
-    print(system_discrete)
-    return system_discrete.A, system_discrete.B, system_discrete.C, system_discrete.D
-    
-    
-setSystemExample(0.1)
+def simpleSystemExample():
+    net = pnetwork.simple_plot()
+    success = estimation.estimate(net, init="flat")
+    print("NET: " + success)
+    return success
