@@ -8,6 +8,7 @@ class LinearSystem:
         self.A = 0
         self.B = 0
         self.C = 0
+        self.D = 0
         self.inputs = 0
         self.initial_states = 0
 
@@ -21,11 +22,12 @@ def systemLinearization(f: function, g: function, initial_states, n):
 
     A = diff_f_x - np.dot(np.dot(diff_f_u, inv(diff_g_u)), diff_g_x)
     B = np.identity(n)
-    C = 
+    C = diff_g_x
+    D = diff_g_u
     
-    inputs = f(initial_states.x, initial_states.u) - (A*initial_states.x)
+    inputs = f(initial_states.x, initial_states.u) - (np.dot(A, initial_states.x))
 
-    lin_model: LinearSystem = LinearSystem(A, B, C, inputs, initial_states)
+    lin_model: LinearSystem = LinearSystem(A, B, C, D, inputs, initial_states)
 
     return lin_model
 
@@ -47,8 +49,8 @@ def partialDiffOfGY(g, u, x_0, u_0):
 
 def solveLinearSystem(G_r: LinearSystem):
     x = sp.symbols('x')
-    f: function = (G_r.A * x) + (G_r.B * G_r.inputs)
-    g: function = G_r.C * x
+    f: function = (np.dot(G_r.A, x)) + (np.dot(G_r.B, G_r.inputs))
+    g: function = (np.dot(G_r.C, x)) + (np.dot(G_r.D, G_r.inputs))
 
     states_r = solve((f, g), x)
     return states_r
