@@ -1,4 +1,3 @@
-import systemNewEngland
 import systemExample
 import approximateBisimulation
 
@@ -27,12 +26,13 @@ class Menu:
         print("3. Set the accuray level (x max)")
         print("4. Set the maximun difference between two rotor angles (delta max)")
         print("5. Set the time step lenght value (t)")
-        print("6. Set the system")
-        print("7. Set the New England system")
-        print("8. Execute Approximate Bisimulation Reduction algorithm")
+        print("6. Set the simple system example")
+        print("7. Set the 30 buses system example")
+        print("8. Set the GB system example")
+        print("9. Execute Approximate Bisimulation Reduction algorithm")
         print("e. Exit")
         print(67 * "-")
-        option_choice = input("Enter an option [1-8/e]: ")
+        option_choice = input("Enter an option [1-9/e]: ")
         print("Option " + option_choice + " chosen")
         return option_choice
 
@@ -52,10 +52,13 @@ class Menu:
         self.time_step = input("Enter the value for the time step (t): ")
 
     def option_6(self):
-        self.A, self.B, self.C, self.D = systemExample.setSystemExample(self.time_step)
+        self.A, self.B, self.C, self.D = systemExample.simpleSystemExample(self.time_step)
 
     def option_7(self):
-        self.A, self.B, self.C, self.D = systemNewEngland.setSystemNewEngland(self.time_step)
+        self.A, self.B, self.C, self.D = systemExample.set30BusSystemExample(self.time_step)
+
+    def option_8(self):
+        self.A, self.B, self.C, self.D = systemExample.setGBSystemExample(self.time_step)
 
     def option_8(self):
         print("The reduced-order is " + self.reduced_order)
