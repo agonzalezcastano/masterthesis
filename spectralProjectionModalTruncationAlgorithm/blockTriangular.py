@@ -1,5 +1,4 @@
 from numpy import ndarray
-import numpy as np
 import decomposeMatrix
 
 def computeBlockTriangularA(A: ndarray, Q: ndarray):
