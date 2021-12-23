@@ -48,16 +48,16 @@ class Menu:
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
 
     def option_5(self):
-        self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
+        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
 
     def option_6(self):
         print(self.alpha)
         print(self.A)
         A_r, B_r, C_r, D_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
-        Csv.transformMatrixToCVS(A_r, "A")
-        Csv.transformMatrixToCVS(B_r, "B")
-        Csv.transformMatrixToCVS(C_r, "C")
-        Csv.transformMatrixToCVS(D_r, "D")
+        Csv.transformMatrixToCVS(A_r, "A_spectralProjection")
+        Csv.transformMatrixToCVS(B_r, "B_spectralProjection")
+        Csv.transformMatrixToCVS(C_r, "C_spectralProjection")
+        Csv.transformMatrixToCVS(D_r, "D_spectralProjection")
 
     def option_e(self):
         print("Bye!")

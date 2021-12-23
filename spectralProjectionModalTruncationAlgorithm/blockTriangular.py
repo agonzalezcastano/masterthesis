@@ -16,6 +16,9 @@ def computeBlockTriangularB(B: ndarray, Q: ndarray):
 
 def computeBlockTriangularC(C: ndarray, Q: ndarray):
     triC = C.dot(Q)
+    triC = triC.transpose()
     C_1, C_2 = decomposeMatrix.decomposeMatrixInTwo(triC)
+    C_1 = C_1.transpose()
+    C_2 = C_2.transpose()
 
     return C_1, C_2
