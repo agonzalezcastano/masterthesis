@@ -1,13 +1,12 @@
-import readCsv
+import sys
+sys.path.append('../')
+from systemExamples.transformationsCsv import Csv
 
-def setPartDataIEEE34SystemExample():
-    A = readCsv.transformCsvToMatrix('ieee34_part_data_A')
-    B = readCsv.transformCsvToMatrix('ieee34_part_data_B')
-    C = readCsv.transformCsvToMatrix('ieee34_part_data_C')
-    D = readCsv.transformCsvToMatrix('ieee34_part_data_D')
+class SystemExample:
+    def setPartDataIEEE34SystemExample():
+        A = Csv.transformCsvToMatrix('ieee34_part_data_A')
+        B = Csv.transformCsvToMatrix('ieee34_part_data_B')
+        C = Csv.transformCsvToMatrix('ieee34_part_data_C')
+        D = Csv.transformCsvToMatrix('ieee34_part_data_D')
 
-    return A, B, C, D
-
-A, B, C, D = setPartDataIEEE34SystemExample()
-
-print(A)
+        return A, B, C, D

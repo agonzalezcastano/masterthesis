@@ -1,5 +1,7 @@
-import systemNewEngland
-import systemExample
+import sys
+sys.path.append('../')
+from systemExamples.systemExample import SystemExample
+from systemExamples.transformationsCsv import Csv
 import modalTruncationAlgorithm
 
 class Menu:
@@ -23,8 +25,8 @@ class Menu:
         print("1. Set the stability margin (alpha)")
         print("2. Set the error tolerance (e)")
         print("3. Set the time step lenght value (t)")
-        print("4. Set the system")
-        print("5. Set the New England system")
+        print("4. Set the IEEE34 partial data system")
+        print("5. Set the IEEE34 system")
         print("6. Execute Spectral Projection Modal Truncation reduction algorithm")
         print("e. Exit")
         print(67 * "-")
@@ -42,16 +44,20 @@ class Menu:
         self.time_step = input("Enter the value for the time step: ")
 
     def option_4(self):
-        self.A, self.B, self.C, self.D = systemExample.setSystemExample(self.time_step)
+        self.alpha = 0.5
+        self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
 
     def option_5(self):
-        self.A, self.B, self.C, self.D = systemNewEngland.setSystemNewEngland(self.time_step)
+        self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
 
     def option_6(self):
-        print("The alpha is " + self.alpha)
-        
-        Gr = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
-        print("The reduced system is: " + Gr)
+        print(self.alpha)
+        print(self.A)
+        A_r, B_r, C_r, D_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
+        Csv.transformMatrixToCVS(A_r, "A")
+        Csv.transformMatrixToCVS(B_r, "B")
+        Csv.transformMatrixToCVS(C_r, "C")
+        Csv.transformMatrixToCVS(D_r, "D")
 
     def option_e(self):
         print("Bye!")

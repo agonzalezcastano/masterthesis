@@ -1,11 +1,10 @@
 from numpy import ndarray
 
 def decomposeMatrixInFour(A: ndarray):
-
     heigh = A.shape[0]
     weight = A.shape[1]
-    heigh_2 = heigh/2
-    weight_2 = weight/2
+    heigh_2 = int(heigh/2)
+    weight_2 = int(weight/2)
    
     A_11 = A[:heigh_2, :weight_2]
     A_12 = A[(heigh_2 + 1):, :weight_2]
@@ -16,11 +15,10 @@ def decomposeMatrixInFour(A: ndarray):
 
 
 def decomposeMatrixInTwo(A: ndarray):
-
-    weight = A.shape[1]
-    weight_2 = weight/2
+    heigh = A.shape[0]
+    heigh_2 = int(heigh/2)
     
-    A_1 = A[:, :weight_2]
-    A_2 = A[:, (weight_2 + 1):]
+    A_1 = A[:heigh_2, :]
+    A_2 = A[(heigh_2 + 1):, :]
 
     return A_1, A_2
