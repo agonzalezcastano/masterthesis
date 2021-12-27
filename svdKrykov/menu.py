@@ -1,5 +1,7 @@
-import systemNewEngland
-import systemExample
+import sys
+sys.path.append('../')
+from systemExamples.systemExample import SystemExample
+from systemExamples.transformationsCsv import Csv
 import interactiveSvdKrylov
 
 class Menu:
@@ -7,7 +9,7 @@ class Menu:
         self.loop = True
         self.error_tolerance = 0
         self.reduced_order = 0
-        self.time_step = 0
+        self.interpolation_points = 0
         self.A = 0
         self.B = 0
         self.C = 0
@@ -23,8 +25,8 @@ class Menu:
         print("1. Set the reduced-order to be achieved (k)")
         print("2. Set the error tolerance (e)")
         print("3. Set the time step lenght value (t)")
-        print("4. Set the system")
-        print("5. Set the New England system")
+        print("4. Set the IEEE34 partial data system")
+        print("5. Set the IEEE34 system")
         print("6. Execute Interactive SVD-Krylov reduction algorithm")
         print("e. Exit")
         print(67 * "-")
@@ -33,7 +35,7 @@ class Menu:
         return option_choice
 
     def option_1(self):
-        self.reduced_order = input("Enter the value for the reduced-order (k): ")
+        self.reduced_order = input("Enter the value for the reduced-order you wish to obtain (k): ")
 
     def option_2(self):
         self.error_tolerance = input("Enter the value for the error tolerance (e): ")
@@ -42,17 +44,20 @@ class Menu:
         self.time_step = input("Enter the value for the time step (t): ")
 
     def option_4(self):
-        self.A, self.B, self.C, self.D = systemExample.setSystemExample(self.time_step)
+        self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
 
     def option_5(self):
-        self.A, self.B, self.C, self.D = systemNewEngland.setSystemNewEngland(self.time_step)
+        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
 
     def option_6(self):
-        print("The reduced-order is " + self.reduced_order)
-        
-        G_r = interactiveSvdKrylov.algorithm(
-            self.A, self.B, self.C, self.D, self.reduced_order, self.error_tolerance)
-        print("The reduced system is: " + G_r)
+        self.interpolation_points = 5
+        self.error_tolerance = 0.1
+        A_r, B_r, C_r, D_r = interactiveSvdKrylov.algorithm(
+            self.A, self.B, self.C, self.D, self.interpolation_points, self.error_tolerance)
+        Csv.transformMatrixToCVS(A_r, "A_svdKrylov")
+        Csv.transformMatrixToCVS(B_r, "B_svdKrylov")
+        Csv.transformMatrixToCVS(C_r, "C_svdKrylov")
+        Csv.transformMatrixToCVS(D_r, "D_svdKrylov")
 
     def option_e(self):
         print("Bye!")

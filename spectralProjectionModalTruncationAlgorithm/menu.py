@@ -3,13 +3,14 @@ sys.path.append('../')
 from systemExamples.systemExample import SystemExample
 from systemExamples.transformationsCsv import Csv
 import modalTruncationAlgorithm
+import numpy as np
 
 class Menu:
     def __init__(self):
         self.loop = True
         self.alpha = 0
         self.error_tolerance = 0
-        self.time_step = 0
+        self.reduced_order = 0
         self.A = 0
         self.B = 0
         self.C = 0
@@ -24,7 +25,7 @@ class Menu:
         print(30 * "-", "MENU", 30 * "-")
         print("1. Set the stability margin (alpha)")
         print("2. Set the error tolerance (e)")
-        print("3. Set the time step lenght value (t)")
+        print("3. Set the minimun reduced order (k)")
         print("4. Set the IEEE34 partial data system")
         print("5. Set the IEEE34 system")
         print("6. Execute Spectral Projection Modal Truncation reduction algorithm")
@@ -41,19 +42,25 @@ class Menu:
         self.error_tolerance = input("Enter the value for the error tolerance (e): ")
 
     def option_3(self):
-        self.time_step = input("Enter the value for the time step: ")
+        self.time_step = input("Enter the value for reduced-order you wish to obtain (k): ")
 
     def option_4(self):
-        self.alpha = 0.5
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
 
     def option_5(self):
         self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
 
     def option_6(self):
-        print(self.alpha)
-        print(self.A)
-        A_r, B_r, C_r, D_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
+        order = np.shape(self.A)[0]
+
+        while order > self.reduced_order:
+            A_r, B_r, C_r, D_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
+            self.A = A_r
+            self.B = B_r
+            self.C = C_r
+            self.D = D_r
+            order = np.shape(A_r)[0]
+
         Csv.transformMatrixToCVS(A_r, "A_spectralProjection")
         Csv.transformMatrixToCVS(B_r, "B_spectralProjection")
         Csv.transformMatrixToCVS(C_r, "C_spectralProjection")
