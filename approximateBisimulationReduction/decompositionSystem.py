@@ -12,13 +12,14 @@ def decomposition(G_1: LinearSystem):
     # G_2 = | A_s B_s |
     #       | C_s D_s |
 
-    n = np.size(G_1.A) 
-    n_stable = sum(linalg.eig(G_1.A) < 0)
+    eig_vals, eig_vect = linalg.eig(G_1.A)
+    n = np.size(G_1.A)
+    n_stable = sum(eig_vals < 0)
     n_unstable = n - n_stable
 
-    if all(linalg.eig(G_1.A)<0):
+    if all(eig_vals < 0):
         G_2 = G_1
-        projection = np.identity(np.size(G_1.A)) # projection is a projection matrix
+        projection = np.identity(np.shape(G_1.A)[0]) # projection is a projection matrix
     else:
         A_t, U = linalg.schur(G_1.A, output='complex')
         A_t_11 = A_t[:n_stable, :n_stable]
@@ -47,7 +48,7 @@ def decomposition(G_1: LinearSystem):
         C_s = C_d[:n_stable, :]
         D_s = D_d[n_stable:, :]
 
-        projection = np.identity(np.size(A_s))
+        projection = np.identity(np.shape(A_s)[0])
         eigvals_1 = linalg.eig(G_1.A)
         eigvals_2 = linalg.eig(A_s)
         projection = np.dot(eigvals_2, linalg.inv(eigvals_1))

@@ -1,6 +1,7 @@
 import sympy as sp
 from numpy.linalg import *
 import numpy as np
+from sympy.core.function import Function
 
 class LinearSystem:
     def __init__(self, A, B, C, D, inputs, initial_states):
@@ -47,9 +48,11 @@ def partialDiffOfGY(g, u, x_0, u_0):
     return diff_g_u
 
 def solveLinearSystem(G_r: LinearSystem):
-    x = sp.symbols('x')
-    f: function = (np.dot(G_r.A, x)) + (np.dot(G_r.B, G_r.inputs))
-    g: function = np.dot(G_r.C, x)
+    # x = sp.symbols('x')
+    # print("shape G_r.A*x")
+    # print(np.shape(G_r.A*x))
+    # print("shape b")
+    # print(np.shape(-np.dot(G_r.B, np.transpose(G_r.inputs))))
+    states_r = solve(G_r.A, -np.dot(G_r.B, np.transpose(G_r.inputs)))
 
-    states_r = solve((f, g), x)
     return states_r

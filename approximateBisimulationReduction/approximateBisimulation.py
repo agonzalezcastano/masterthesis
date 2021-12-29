@@ -41,13 +41,13 @@ def extractStableSystem(G : LinearSystem, reduced_order):
     initial_states  = G.initial_states
 
     eig_vals, eig_vec = linalg.eig(A)
-
-    n = np.shape(A)[0]
     n_unstable = sum(eig_vals >= 0)
+    print("n_unstable")
+    print(n_unstable)
 
     if n_unstable > reduced_order:
         print('Dimension of the reduced-order model must be greater than the dimension of the unstable subsystem of G')
-    if n_unstable == reduced_order:
+    if n_unstable <= reduced_order:
         # System is unstable
         # Extraction of the stable subsystem
         G_s, projection = decompositionSystem.decomposition(G)
@@ -55,28 +55,31 @@ def extractStableSystem(G : LinearSystem, reduced_order):
         B_stable = G_s.B
         C_stable = G_s.C
         D_stable = G_s.D
+        initial_states_stable = G_s.initial_states
     if n_unstable == 0:
         # System is stable
         A_stable = A
         B_stable = B
         C_stable = C
         D_stable = D
-        projection = np.identity(n)
+        initial_states_stable = initial_states
+        projection = np.identity(np.size(A))
 
-    G_stable = LinearSystem(A_stable, B_stable, C_stable, D_stable, inputs, initial_states)
+    G_stable = LinearSystem(A_stable, B_stable, C_stable, D_stable, inputs, initial_states_stable)
 
     return G_stable, projection
 
 def reduction(G_stable: LinearSystem, H: np.ndarray):
-    H_inv = linalg.inv(H)
+    H_inv = linalg.pinv(H)
     A_r = np.dot(np.dot(H, G_stable.A), H_inv)
     B_r = np.dot(H, G_stable.B)
     C_r = np.dot(G_stable.C, H_inv)
+    D_r = G_stable.D
 
     states = np.dot(H, G_stable.initial_states)
-    inputs = G_stable.inputs
+    inputs = np.dot(H, G_stable.inputs)
 
-    G_r = LinearSystem(A_r, B_r, C_r, inputs, states)
+    G_r = LinearSystem(A_r, B_r, C_r, D_r, inputs, states)
     return G_r
 
 def solveLyapunovEquations(A, C):
@@ -96,26 +99,8 @@ def solveLyapunovEquations(A, C):
 
 def calculateSurjectiveMap(m: int, k: int, n_unstable: int, G: LinearSystem):
     #  Hs is such that the eigenvalues of the matrix Hs * As,1 * Hs+ have all a strictly negative real part
-    print("m")
-    print(m)
-    print("k")
-    print(k)
-    print("n_unstable")
-    print(n_unstable)
-    zero_matrix = np.zeros((k-n_unstable, n_unstable))
-    print("np.shape(zero_matrix)")
-    print(np.shape(zero_matrix))
-    identity_matrix_m = np.eye(n_unstable, m)
-    print("np.shape(identity_matrix_m)")
-    print(np.shape(identity_matrix_m))
+    identity_matrix_m = np.eye(n_unstable + 1, m)
     identity_matrix_k= np.eye(k-n_unstable, m-n_unstable)
-    print("np.shape(identity_matrix_k)")
-    print(np.shape(identity_matrix_k))
-    H: np.ndarray = np.eye(np.shape(identity_matrix_m)[0], np.shape(identity_matrix_k)[0])
-    print("np.shape(H)")
-    print(np.shape(H))
-    I= H.dot(G.A).dot(linalg.pinv(H))
-    print("I")
-    print(linalg.eig(I)[0])
+    H: np.ndarray = np.eye(np.shape(identity_matrix_k)[0], np.shape(identity_matrix_m)[1])
     
     return H
