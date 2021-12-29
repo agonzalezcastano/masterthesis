@@ -1,5 +1,16 @@
 systemExamples/data/.DS_Store
 systemExamples/__pycache__/readCsv.cpython-38.pyc
+systemExamples/__pycache__/systemExample.cpython-38.pyc
+systemExamples/__pycache__/transformationsCsv.cpython-38.pyc
+svdKrykov/__pycache__/interactiveSvdKrylov.cpython-38.pyc
+svdKrykov/__pycache__/interpolationPoints.cpython-38.pyc
+svdKrykov/__pycache__/projectionMatrix.cpython-38.pyc
+svdKrykov/__pycache__/reducedMatrix.cpython-38.pyc
+svdKrykov/__pycache__/reducedSystem.cpython-38.pyc
+approximateBisimulationReduction/__pycache__/accuracy.cpython-38.pyc
+approximateBisimulationReduction/__pycache__/approximateBisimulation.cpython-38.pyc
+approximateBisimulationReduction/__pycache__/decompositionSystem.cpython-38.pyc
+approximateBisimulationReduction/__pycache__/linearSystem.cpython-38.pyc
 .DS_Store
 .DS_Store
 .DS_Store
