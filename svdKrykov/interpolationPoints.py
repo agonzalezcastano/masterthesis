@@ -20,6 +20,9 @@ def calculateInitialInterpolationPoints(A, n_int_points):
 
     return int_points
 
-def calculateInterpolationPoints(eigen_values):
-    interpolation_points = -eigen_values
-    return interpolation_points
+def calculateInterpolationPoints(eigen_values, n_int_points):
+    int_points = np.empty(0)
+    for num in range(0, n_int_points, 1):
+        int_points = np.append(int_points, -eigen_values[num, 0])
+
+    return int_points

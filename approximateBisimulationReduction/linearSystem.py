@@ -1,17 +1,17 @@
-from numpy.matrixlib import matrix
 import sympy as sp
 from numpy.linalg import *
 import numpy as np
 
 class LinearSystem:
-    def __init__(self):
-        self.A = 0
-        self.B = 0
-        self.C = 0
-        self.inputs = 0
-        self.initial_states = 0
+    def __init__(self, A, B, C, D, inputs, initial_states):
+        self.A = A
+        self.B = B
+        self.C = C
+        self.D = D
+        self.inputs = inputs
+        self.initial_states = initial_states
 
-def systemLinearization(f: function, g: function, initial_states, n):
+def systemLinearization(f, g, initial_states, n):
     x, u = sp.symbols('x u')
 
     diff_f_x = partialDiffOfFX(f, x, initial_states.x, initial_states.u)
@@ -22,10 +22,11 @@ def systemLinearization(f: function, g: function, initial_states, n):
     A = diff_f_x - np.dot(np.dot(diff_f_u, inv(diff_g_u)), diff_g_x)
     B = np.identity(n)
     C = diff_g_x
+    D = diff_g_u
     
     inputs = f(initial_states.x, initial_states.u) - (np.dot(A, initial_states.x))
 
-    lin_model: LinearSystem = LinearSystem(A, B, C, inputs, initial_states)
+    lin_model: LinearSystem = LinearSystem(A, B, C, D, inputs, initial_states)
 
     return lin_model
 

@@ -1,4 +1,8 @@
-import systemExample
+from math import pi
+import sys
+sys.path.append('../')
+from systemExamples.systemExample import SystemExample
+from systemExamples.transformationsCsv import Csv
 import approximateBisimulation
 
 class Menu:
@@ -13,6 +17,8 @@ class Menu:
         self.B = 0
         self.C = 0
         self.D = 0
+        self.inputs = 0
+        self.initial_states = 0
 
 
     def switch(self, option_number):
@@ -26,13 +32,12 @@ class Menu:
         print("3. Set the accuray level (x max)")
         print("4. Set the maximun difference between two rotor angles (delta max)")
         print("5. Set the time step lenght value (t)")
-        print("6. Set the simple system example")
-        print("7. Set the 30 buses system example")
-        print("8. Set the GB system example")
-        print("9. Execute Approximate Bisimulation Reduction algorithm")
+        print("6. Set the IEEE34 partial data system")
+        print("7. Set the IEEE34 system")
+        print("8. Execute Approximate Bisimulation Reduction algorithm")
         print("e. Exit")
         print(67 * "-")
-        option_choice = input("Enter an option [1-9/e]: ")
+        option_choice = input("Enter an option [1-8/e]: ")
         print("Option " + option_choice + " chosen")
         return option_choice
 
@@ -52,20 +57,24 @@ class Menu:
         self.time_step = input("Enter the value for the time step (t): ")
 
     def option_6(self):
-        self.A, self.B, self.C, self.D = systemExample.simpleSystemExample(self.time_step)
+        self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
 
     def option_7(self):
-        self.A, self.B, self.C, self.D = systemExample.set30BusSystemExample(self.time_step)
+        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
 
     def option_8(self):
-        self.A, self.B, self.C, self.D = systemExample.setGBSystemExample(self.time_step)
-
-    def option_8(self):
-        print("The reduced-order is " + self.reduced_order)
-        
-        G_r = approximateBisimulation.algorithm(
-            self.A, self.B, self.C, self.D, self.reduced_order, self.time_step, self.x_max, self.delta_max, self.error_tolerance)
-        print("The reduced system is: " + G_r)
+        self.reduced_order = 15
+        self.x_max = 0.1
+        self.delta_max = pi/2
+        self.error_tolerance = 0.1
+        self.inputs = Csv.transformCsvToMatrix('ieee34_part_data_inputs')
+        self.initial_states = Csv.transformCsvToMatrix('ieee34_part_data_initial_states')
+        A_r, B_r, C_r, D_r = approximateBisimulation.algorithm(
+            self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.reduced_order, self.x_max, self.delta_max, self.error_tolerance)
+        Csv.transformMatrixToCVS(A_r, "A_approximateBisimulation")
+        Csv.transformMatrixToCVS(B_r, "B_approximateBisimulation")
+        Csv.transformMatrixToCVS(C_r, "C_approximateBisimulation")
+        Csv.transformMatrixToCVS(D_r, "D_approximateBisimulation")
 
     def option_e(self):
         print("Bye!")

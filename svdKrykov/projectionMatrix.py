@@ -1,6 +1,4 @@
 import numpy as np
-from numpy.core.fromnumeric import shape
-from numpy.lib.type_check import imag
 from numpy.linalg import linalg
 import scipy.linalg as scilinalg
 
@@ -14,28 +12,25 @@ def calculateProjectionMatrixQ(A: np.ndarray, C: np.ndarray):
 def calculateProjectionMatrixV(A: np.ndarray, B: np.ndarray, interpolation_points: np.ndarray):
     A_height = A.shape[0]
     I = np.identity(A_height)
-    
-    E = (interpolation_points[0] * I) - A
-    F = linalg.inv(E)
-    v = np.dot(F, B)
-    v_temp = v/linalg.norm(v)
+    V_weight = np.shape(B)[1] * np.shape(interpolation_points)[0]
+    V: np.ndarray = np.zeros((A_height, V_weight))
+    k = 0
 
-    for num in range(1, np.shape(interpolation_points)[0], 1):
-        print("num")
-        print(num)
+    for num in range(0, np.shape(interpolation_points)[0], 1):
         E = (interpolation_points[num] * I) - A
-        F = linalg.inv(E)
-        v = np.dot(F,v_temp)
-        v_next, r = linalg.qr(v)
-        V = v_next/linalg.norm(v_next)
-        v_temp = v_next
-        print("shape V inside method")
-        print(np.shape(V))
-
+        F = linalg.pinv(E)
+        v = np.dot(F, B)
+        v_temp: np.ndarray = v/linalg.norm(v)
+        v_next, r = linalg.qr(v_temp)
+        v_temp: np.ndarray = v_next/linalg.norm(v_next)
+        V[:, 0] = v_temp[:, 0]
+        for i in range(1, np.shape(B)[1], 1):
+            V[:, k + i] = v_temp[:, i]
+        k = num + 2
     return V
 
 def calculateProjectionMatrixZ(Q: np.ndarray, V: np.ndarray):
     trasV = V.transpose()
-    inv = linalg.inv(trasV.dot(Q).dot(V))
+    inv = linalg.pinv(trasV.dot(Q).dot(V))
     Z = Q.dot(V).dot(inv)
     return Z
