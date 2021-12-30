@@ -23,3 +23,4 @@ approximateBisimulationReduction/__pycache__/accuracy.cpython-38.pyc
 approximateBisimulationReduction/__pycache__/approximateBisimulation.cpython-38.pyc
 approximateBisimulationReduction/__pycache__/decompositionSystem.cpython-38.pyc
 approximateBisimulationReduction/__pycache__/linearSystem.cpython-38.pyc
+.DS_Store
