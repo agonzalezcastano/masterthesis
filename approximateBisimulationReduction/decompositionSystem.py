@@ -13,7 +13,7 @@ def decomposition(G_1: LinearSystem):
     #       | C_s D_s |
 
     eig_vals, eig_vect = linalg.eig(G_1.A)
-    n = np.size(G_1.A)
+    n = np.shape(G_1.A)[0]
     n_stable = sum(eig_vals < 0)
     n_unstable = n - n_stable
 
@@ -29,31 +29,32 @@ def decomposition(G_1: LinearSystem):
         B_t = np.dot(np.transpose(U), G_1.B)
         C_t = np.dot(G_1.C, U)
 
-        S = linalg.solve_sylvester(A_t_11, -A_t_22, -A_t_12)
+        S = linalg.solve_sylvester(A_t_11, -A_t_22, -np.transpose(A_t_12))
         I_n_stable = np.identity(n_stable)
         I_n_unstable = np.identity(n_unstable)
 
-        W = np.array([[I_n_stable, S], 
-                        [np.zeros((n_stable, n_unstable)), I_n_unstable]])
-        W_inv = np.array([[I_n_stable, -S],
-                        [np.zeros((n_stable, n_unstable)), I_n_unstable]])
+        W = np.block([[I_n_stable, S],[np.zeros((n_unstable, n_stable)),I_n_unstable]])
+        W_inv = np.block([[I_n_stable, -S],[np.zeros((n_unstable, n_stable)),I_n_unstable]])
 
         A_d = np.dot(np.dot(W_inv, A_t), W)
         B_d = np.dot(W_inv, B_t)
         C_d = np.dot(C_t, W)
         D_d = G_1.D
+        initial_states_d = np.dot(W_inv, G_1.initial_states)
+        inputs_d = np.dot(G_1.inputs, W)
 
         A_s = A_d[:n_stable, :n_stable]
-        B_s = B_d[:, :n_stable]
-        C_s = C_d[:n_stable, :]
-        D_s = D_d[n_stable:, :]
+        B_s = B_d[:n_stable, :]
+        C_s = C_d[:, :n_stable]
+        D_s = D_d
+        initial_states_s = initial_states_d[:n_stable, :]
+        inputs_s = inputs_d[:, :n_stable]
 
         projection = np.identity(np.shape(A_s)[0])
-        eigvals_1 = linalg.eig(G_1.A)
-        eigvals_2 = linalg.eig(A_s)
-        projection = np.dot(eigvals_2, linalg.inv(eigvals_1))
-        inputs_s = G_1.inputs
-        initial_states_s = np.dot(projection, G_1.initial_states)
+        eigvals_2 = linalg.eig(A_s)[0]
+        projection = projection * eigvals_2
+        inputs_s = np.dot(inputs_s, projection)
+        initial_states_s = np.dot(projection, initial_states_s)
 
         G_2 = LinearSystem(A_s, B_s, C_s, D_s, inputs_s, initial_states_s)
 

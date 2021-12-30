@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.core.arrayprint import _guarded_repr_or_str
 import scipy.linalg as linalg
 from scipy.linalg import decomp_cholesky
 import linearSystem
@@ -21,16 +22,18 @@ def algorithm(A, B, C, D, inputs, initial_states, reduced_order, states_max, del
 
     while  accuracy.isAccuracyCriterionSatisfied(states_r, states_max):
         # A, B, C, inputs, states = linearSystem.systemLinearization(f, g, initial_states, reduced_order)
-        G_1 = LinearSystem(A, B, C, D, inputs, states)
+        G_1 = LinearSystem(G_1_stable.A, G_1_stable.B, G_1_stable.C, G_1_stable.D, G_1_stable.inputs, G_1_stable.initial_states)
         G_1_stable, projection = extractStableSystem(G_1, reduced_order)
         H: np.ndarray = calculateSurjectiveMap(n, reduced_order, n_unstable, G_1_stable)
         G_r_2: LinearSystem = reduction(G_1_stable, H)
         states_r = linearSystem.solveLinearSystem(G_r_2)
         p_r_2 = np.dot(G_r_2.C, states_r)
         if accuracy.isErrorBoundSatisfied(G_r_2.C, states_r, G_1_stable.C, G_1_stable.initial_states, error_tolerance):
-            return G_r_2, p_r_2
+            return G_r_2.A, G_r_2.B, G_r_2.C, G_r_2.D, G_r_2.inputs, states_r
         else:
             reduced_order = reduced_order + 1
+    
+    return G_r_2.A, G_r_2.B, G_r_2.C, G_r_2.D, G_r_2.inputs, states_r
 
 def extractStableSystem(G : LinearSystem, reduced_order):
     A  = G.A
@@ -42,8 +45,6 @@ def extractStableSystem(G : LinearSystem, reduced_order):
 
     eig_vals, eig_vec = linalg.eig(A)
     n_unstable = sum(eig_vals >= 0)
-    print("n_unstable")
-    print(n_unstable)
 
     if n_unstable > reduced_order:
         print('Dimension of the reduced-order model must be greater than the dimension of the unstable subsystem of G')
@@ -56,6 +57,7 @@ def extractStableSystem(G : LinearSystem, reduced_order):
         C_stable = G_s.C
         D_stable = G_s.D
         initial_states_stable = G_s.initial_states
+        inputs_stable = G_s.inputs
     if n_unstable == 0:
         # System is stable
         A_stable = A
@@ -63,9 +65,10 @@ def extractStableSystem(G : LinearSystem, reduced_order):
         C_stable = C
         D_stable = D
         initial_states_stable = initial_states
+        inputs_stable = inputs
         projection = np.identity(np.size(A))
 
-    G_stable = LinearSystem(A_stable, B_stable, C_stable, D_stable, inputs, initial_states_stable)
+    G_stable = LinearSystem(A_stable, B_stable, C_stable, D_stable, inputs_stable, initial_states_stable)
 
     return G_stable, projection
 
@@ -77,7 +80,7 @@ def reduction(G_stable: LinearSystem, H: np.ndarray):
     D_r = G_stable.D
 
     states = np.dot(H, G_stable.initial_states)
-    inputs = np.dot(H, G_stable.inputs)
+    inputs = np.dot(G_stable.inputs, H_inv)
 
     G_r = LinearSystem(A_r, B_r, C_r, D_r, inputs, states)
     return G_r
@@ -100,7 +103,7 @@ def solveLyapunovEquations(A, C):
 def calculateSurjectiveMap(m: int, k: int, n_unstable: int, G: LinearSystem):
     #  Hs is such that the eigenvalues of the matrix Hs * As,1 * Hs+ have all a strictly negative real part
     identity_matrix_m = np.eye(n_unstable + 1, m)
-    identity_matrix_k= np.eye(k-n_unstable, m-n_unstable)
+    identity_matrix_k= np.eye(k, m-n_unstable)
     H: np.ndarray = np.eye(np.shape(identity_matrix_k)[0], np.shape(identity_matrix_m)[1])
     
     return H

@@ -4,6 +4,7 @@ sys.path.append('../')
 from systemExamples.systemExample import SystemExample
 from systemExamples.transformationsCsv import Csv
 import approximateBisimulation
+import time
 
 class Menu:
     def __init__(self):
@@ -19,6 +20,7 @@ class Menu:
         self.D = 0
         self.inputs = 0
         self.initial_states = 0
+        self.start_time = 0
 
 
     def switch(self, option_number):
@@ -58,23 +60,30 @@ class Menu:
 
     def option_6(self):
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
+        self.inputs = Csv.transformCsvToMatrix('ieee34_part_data_inputs')
+        self.initial_states = Csv.transformCsvToMatrix('ieee34_part_data_initial_states')
 
     def option_7(self):
         self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
+        self.inputs = Csv.transformCsvToMatrix('ieee34_data_inputs')
+        self.initial_states = Csv.transformCsvToMatrix('ieee34_data_initial_states')
 
     def option_8(self):
         self.reduced_order = 15
         self.x_max = 0.1
         self.delta_max = pi/2
         self.error_tolerance = 0.1
-        self.inputs = Csv.transformCsvToMatrix('ieee34_part_data_inputs')
-        self.initial_states = Csv.transformCsvToMatrix('ieee34_part_data_initial_states')
-        A_r, B_r, C_r, D_r = approximateBisimulation.algorithm(
+        self.start_time = time.time()
+        A_r, B_r, C_r, D_r, inputs_r, initial_states_r = approximateBisimulation.algorithm(
             self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.reduced_order, self.x_max, self.delta_max, self.error_tolerance)
+        print("Execution time: %s seconds" % (time.time() - self.start_time))
+        print("Reduced order: %i" % self.reduced_order)
         Csv.transformMatrixToCVS(A_r, "A_approximateBisimulation")
         Csv.transformMatrixToCVS(B_r, "B_approximateBisimulation")
         Csv.transformMatrixToCVS(C_r, "C_approximateBisimulation")
         Csv.transformMatrixToCVS(D_r, "D_approximateBisimulation")
+        Csv.transformMatrixToCVS(initial_states_r, "initial_states_approximateBisimulation")
+        Csv.transformMatrixToCVS(inputs_r, "inputs_approximateBisimulation")
 
     def option_e(self):
         print("Bye!")

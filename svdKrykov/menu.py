@@ -3,6 +3,8 @@ sys.path.append('../')
 from systemExamples.systemExample import SystemExample
 from systemExamples.transformationsCsv import Csv
 import interactiveSvdKrylov
+import time
+import numpy as np
 
 class Menu:
     def __init__(self):
@@ -14,6 +16,7 @@ class Menu:
         self.B = 0
         self.C = 0
         self.D = 0
+        self.start_time = 0
 
 
     def switch(self, option_number):
@@ -52,8 +55,12 @@ class Menu:
     def option_6(self):
         self.interpolation_points = 5
         self.error_tolerance = 0.1
+        self.start_time = time.time()
         A_r, B_r, C_r, D_r = interactiveSvdKrylov.algorithm(
             self.A, self.B, self.C, self.D, self.interpolation_points, self.error_tolerance)
+        self.reduced_order = np.shape(A_r)[0]
+        print("Execution time: %s seconds" % (time.time() - self.start_time))
+        print("Reduced order: %i" % self.reduced_order)
         Csv.transformMatrixToCVS(A_r, "A_svdKrylov")
         Csv.transformMatrixToCVS(B_r, "B_svdKrylov")
         Csv.transformMatrixToCVS(C_r, "C_svdKrylov")

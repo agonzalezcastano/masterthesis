@@ -18,14 +18,13 @@ def isAccuracyCriterionSatisfied(states_r, state_max):
             status = False
     return status
 
-def calculateError(C_1, states_1, C_2, states_2):
-    error = np.dot(C_1, states_1) - np.dot(C_2, states_2)
-    return error
-
 def isErrorBoundSatisfied(C_1, states_1, C_2, states_2, error_tolerance):
-    error = calculateError(C_1, states_1, C_2, states_2)
-    if error < error_tolerance:
-        # Error bound criterion is satisfied
-        return True
-    else:
-        return False
+    status: bool = True
+    error = np.dot(C_1, states_1) - np.dot(C_2, states_2)
+
+    for i in range(0, np.shape(error)[0], 1):
+        if error[0, i] < error_tolerance:
+            status = True
+        else:
+            status = False
+    return status

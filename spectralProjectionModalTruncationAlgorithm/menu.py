@@ -4,6 +4,7 @@ from systemExamples.systemExample import SystemExample
 from systemExamples.transformationsCsv import Csv
 import modalTruncationAlgorithm
 import numpy as np
+import time
 
 class Menu:
     def __init__(self):
@@ -15,6 +16,7 @@ class Menu:
         self.B = 0
         self.C = 0
         self.D = 0
+        self.start_time = 0
 
 
     def switch(self, option_number):
@@ -60,7 +62,11 @@ class Menu:
             self.C = C_r
             self.D = D_r
             order = np.shape(A_r)[0]
-
+            print("Execution time per algorithm execution: %s seconds" % (time.time() - self.start_time))
+    
+        self.reduced_order = np.shape(A_r)[0]
+        print("Final execution time: %s seconds" % (time.time() - self.start_time))
+        print("Reduced order: %i" % self.reduced_order)
         Csv.transformMatrixToCVS(A_r, "A_spectralProjection")
         Csv.transformMatrixToCVS(B_r, "B_spectralProjection")
         Csv.transformMatrixToCVS(C_r, "C_spectralProjection")
