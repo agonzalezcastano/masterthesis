@@ -16,3 +16,15 @@ C_var_approx_bisimulation = readtable(strcat(path,'iee34_reduced_C_approximateBi
 D_var_approx_bisimulation = readtable(strcat(path,'iee34_reduced_D_approximateBisimulation.csv'));
 inputs_approx_bisimulation = readtable(strcat(path,'iee34_reduced_inputs_approximateBisimulation.csv'));
 states_approx_bisimulation = readtable(strcat(path,'iee34_reduced_initial_states_approximateBisimulation.csv'));
+
+initial_states = test.x0;
+states = test.xss;
+output = test.yss;
+input = test.uss;
+
+path = '/Users/amparogonzalezcastano/Documents/GitHub/masterthesis/systemExample/data/';
+
+writematrix(initial_states,'ieee34_part_data_initial_states.csv');
+writematrix(states, 'ieee34_part_data_states.csv');
+writematrix(output, 'ieee34_part_data_output.csv');
+writematrix(input, 'ieee34_part_data_inputs.csv');

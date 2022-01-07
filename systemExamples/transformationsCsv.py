@@ -9,4 +9,4 @@ class Csv:
         return result
     
     def transformMatrixToCVS(A: numpy.ndarray, matrixName):
-        numpy.savetxt("../results/iee34_reduced_" + matrixName + ".csv", A, fmt="%d", delimiter=",") 
+        numpy.savetxt("../results/ieee34_reduced_" + matrixName + ".csv", A, fmt="%d", delimiter=",") 

@@ -44,7 +44,7 @@ class Menu:
         self.error_tolerance = input("Enter the value for the error tolerance (e): ")
 
     def option_3(self):
-        self.time_step = input("Enter the value for reduced-order you wish to obtain (k): ")
+        self.reduced_order = input("Enter the value for reduced-order you wish to obtain (k): ")
 
     def option_4(self):
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
@@ -54,6 +54,9 @@ class Menu:
 
     def option_6(self):
         order = np.shape(self.A)[0]
+
+        self.alpha = 0.1
+        self.reduced_order = 15
 
         while order > self.reduced_order:
             A_r, B_r, C_r, D_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
