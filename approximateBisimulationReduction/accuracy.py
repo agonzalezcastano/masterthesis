@@ -23,7 +23,7 @@ def isErrorBoundSatisfied(C_1, states_1, C_2, states_2, error_tolerance):
     error = np.dot(C_1, states_1) - np.dot(C_2, states_2)
 
     for i in range(0, np.shape(error)[0], 1):
-        if error[0, i] < error_tolerance:
+        if error[i, 0] < error_tolerance:
             status = True
         else:
             status = False

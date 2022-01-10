@@ -1,5 +1,7 @@
 from math import pi
 import sys
+
+import numpy
 sys.path.append('../')
 from systemExamples.systemExample import SystemExample
 from systemExamples.transformationsCsv import Csv
@@ -60,16 +62,17 @@ class Menu:
 
     def option_6(self):
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
-        self.inputs = Csv.transformCsvToMatrix('ieee34_part_data_inputs')
-        self.initial_states = Csv.transformCsvToMatrix('ieee34_part_data_initial_states')
+        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_part_data_inputs')
+        self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_part_data_initial_states')
+        self.reduced_order = 15
 
     def option_7(self):
         self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
-        self.inputs = Csv.transformCsvToMatrix('ieee34_data_inputs')
-        self.initial_states = Csv.transformCsvToMatrix('ieee34_data_initial_states')
+        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_data_inputs')
+        self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_data_initial_states')
+        self.reduced_order = 50
 
     def option_8(self):
-        self.reduced_order = 15
         self.x_max = 0.1
         self.delta_max = pi/2
         self.error_tolerance = 0.1

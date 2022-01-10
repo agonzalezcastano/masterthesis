@@ -48,9 +48,13 @@ class Menu:
 
     def option_4(self):
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
+        self.reduced_order = 15
+        self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
 
     def option_5(self):
         self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
+        self.reduced_order = 50
+        self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
 
     def option_6(self):
         self.interpolation_points = 5

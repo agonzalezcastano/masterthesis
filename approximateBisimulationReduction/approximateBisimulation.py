@@ -1,14 +1,11 @@
 import numpy as np
-from numpy.core.arrayprint import _guarded_repr_or_str
 import scipy.linalg as linalg
-from scipy.linalg import decomp_cholesky
 import linearSystem
 from linearSystem import LinearSystem
 import accuracy
 import decompositionSystem
 
 def algorithm(A, B, C, D, inputs, initial_states, reduced_order, states_max, delta_max, error_tolerance):
-    # A, B, C, inputs, states = linearSystem.systemLinearization(f, g, initial_states, reduced_order)
     states = initial_states
     G_1 = LinearSystem(A, B, C, D, inputs, states)
     G_1_stable, projection = extractStableSystem(G_1, reduced_order)
@@ -21,7 +18,6 @@ def algorithm(A, B, C, D, inputs, initial_states, reduced_order, states_max, del
     states_r = linearSystem.solveLinearSystem(G_r_2)
 
     while  accuracy.isAccuracyCriterionSatisfied(states_r, states_max):
-        # A, B, C, inputs, states = linearSystem.systemLinearization(f, g, initial_states, reduced_order)
         G_1 = LinearSystem(G_1_stable.A, G_1_stable.B, G_1_stable.C, G_1_stable.D, G_1_stable.inputs, G_1_stable.initial_states)
         G_1_stable, projection = extractStableSystem(G_1, reduced_order)
         H: np.ndarray = calculateSurjectiveMap(n, reduced_order, n_unstable, G_1_stable)
@@ -73,14 +69,14 @@ def extractStableSystem(G : LinearSystem, reduced_order):
     return G_stable, projection
 
 def reduction(G_stable: LinearSystem, H: np.ndarray):
-    H_inv = linalg.pinv(H)
+    H_inv = linalg.pinv(H).astype('float')
     A_r = np.dot(np.dot(H, G_stable.A), H_inv)
     B_r = np.dot(H, G_stable.B)
     C_r = np.dot(G_stable.C, H_inv)
     D_r = G_stable.D
 
     states = np.dot(H, G_stable.initial_states)
-    inputs = np.dot(G_stable.inputs, H_inv)
+    inputs = G_stable.inputs
 
     G_r = LinearSystem(A_r, B_r, C_r, D_r, inputs, states)
     return G_r

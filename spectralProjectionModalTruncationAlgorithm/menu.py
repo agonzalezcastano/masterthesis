@@ -48,15 +48,16 @@ class Menu:
 
     def option_4(self):
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
+        self.reduced_order = 15
 
     def option_5(self):
         self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
+        self.reduced_order = 50
 
     def option_6(self):
         order = np.shape(self.A)[0]
 
         self.alpha = 0.1
-        self.reduced_order = 15
 
         while order > self.reduced_order:
             A_r, B_r, C_r, D_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)

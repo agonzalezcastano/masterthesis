@@ -1,5 +1,7 @@
 from numpy import ndarray
+import numpy as np
 import decomposeMatrix
+import scipy.linalg as linalg
 
 def computeBlockTriangularA(A: ndarray, Q: ndarray):
     tri_A = Q.transpose().dot(A).dot(Q)

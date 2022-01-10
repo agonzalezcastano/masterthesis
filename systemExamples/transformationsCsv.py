@@ -1,12 +1,30 @@
 import csv
-import numpy
+import numpy as np
 
 class Csv:
     def transformCsvToMatrix(csvFile: csv):
-        reader = csv.reader(open("../systemExamples/data/" + csvFile + ".csv"), delimiter=",")
-        x = list(reader)
-        result = numpy.array(x).astype("float")
+        numpy_array = np.loadtxt(open("../systemExamples/data/" + csvFile + ".csv"), delimiter=",", dtype = "complex")
+
+        rows = np.shape(numpy_array)[0]
+        cols = np.shape(numpy_array)[1]
+        result = np.ndarray((rows, cols), dtype = "complex")
+
+        for x in range(0, cols - 1):
+            for y in range(0, rows - 1):
+                result[y][x] = complex(numpy_array[y,x])
+
         return result
     
-    def transformMatrixToCVS(A: numpy.ndarray, matrixName):
-        numpy.savetxt("../results/ieee34_reduced_" + matrixName + ".csv", A, fmt="%d", delimiter=",") 
+    def transformComplexCsvToMatrix(csvFile: csv):
+        numpy_array = np.loadtxt(open("../systemExamples/data/" + csvFile + ".csv"), delimiter=",", dtype = "complex")
+
+        rows = np.shape(numpy_array)[0]
+        result = np.ndarray((rows, 1), dtype = "complex")
+
+        for x in range(0, rows - 1):
+            result[x] = complex(numpy_array[x])
+
+        return result
+    
+    def transformMatrixToCVS(A: np.ndarray, matrixName):
+        np.savetxt("../results/ieee34_reduced_" + matrixName + ".csv", A, fmt="%f", delimiter=",")
