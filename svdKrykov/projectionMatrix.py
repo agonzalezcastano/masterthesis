@@ -6,22 +6,31 @@ def calculateProjectionMatrixQ(A: np.ndarray, C: np.ndarray):
     trasC = C.transpose()
     T = -trasC.dot(C)
     trasA = A.transpose()
-    Q = scilinalg.solve_continues_lyapunov(trasA, T)
+    Q = scilinalg.solve_continuous_lyapunov(trasA, T)
     return Q
 
 def calculateProjectionMatrixV(A: np.ndarray, B: np.ndarray, interpolation_points: np.ndarray):
     A_height = A.shape[0]
-    A_weight = A.shape[1]
-
     I = np.identity(A_height)
-    E = np.dot(interpolation_points, I) - A
-    F = linalg.inv(E)
-    V = np.imag(np.dot(F,B))
+    V_weight = np.shape(B)[1] * np.shape(interpolation_points)[0]
+    V: np.ndarray = np.zeros((A_height, V_weight))
+    k = 0
 
+    for num in range(0, np.shape(interpolation_points)[0], 1):
+        E = (interpolation_points[num] * I) - A
+        F = linalg.pinv(E)
+        v = np.dot(F, B)
+        v_temp: np.ndarray = v/linalg.norm(v)
+        v_next, r = linalg.qr(v_temp)
+        v_temp: np.ndarray = v_next/linalg.norm(v_next)
+        V[:, 0] = v_temp[:, 0]
+        for i in range(1, np.shape(B)[1], 1):
+            V[:, k + i] = v_temp[:, i]
+        k = num + 2
     return V
 
 def calculateProjectionMatrixZ(Q: np.ndarray, V: np.ndarray):
     trasV = V.transpose()
-    inv = linalg.inv(trasV.dot(Q).dot(V))
+    inv = linalg.pinv(trasV.dot(Q).dot(V))
     Z = Q.dot(V).dot(inv)
     return Z

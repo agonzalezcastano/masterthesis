@@ -1,8 +1,10 @@
 import numpy as np
+from numpy.core.fromnumeric import transpose
 
 def computeReducedMatrixA(A: np.ndarray, Z: np.ndarray, V: np.ndarray):
-    tras_Z = Z.transpose()
-    A_r = tras_Z.dot(A).dot(V)
+    trans_Z = Z.transpose()
+    I = trans_Z.dot(V)
+    A_r = trans_Z.dot(A).dot(V)  
     return A_r
 
 def computeReducedMatrixB(B: np.ndarray, Z: np.ndarray):
