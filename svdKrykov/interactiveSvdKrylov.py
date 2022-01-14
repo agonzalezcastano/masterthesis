@@ -5,7 +5,7 @@ import interpolationPoints
 import numpy.linalg as linalg
 import numpy as np
 
-def algorithm(A, B, C, D, n_inter_points, error_tolerance):
+def algorithm(A, B, C, D, inputs, n_inter_points, error_tolerance):
     init_sigma = interpolationPoints.calculateInitialInterpolationPoints(A, n_inter_points)
     V = projectionMatrix.calculateProjectionMatrixV(A, B, init_sigma)
     Q = projectionMatrix.calculateProjectionMatrixQ(A, C)
@@ -26,4 +26,7 @@ def algorithm(A, B, C, D, n_inter_points, error_tolerance):
         condition = (sigma[k + 1] - sigma[k])/sigma[k]
         k = k + 1
 
-    return A_r, B_r, C_r, D_r
+    # solve linear system to obtain the reduced states
+    states_r = np.dot(linalg.pinv(A_r), -np.dot(B_r, inputs))
+
+    return A_r, B_r, C_r, D_r, states_r

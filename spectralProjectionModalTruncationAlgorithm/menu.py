@@ -9,14 +9,16 @@ import time
 class Menu:
     def __init__(self):
         self.loop = True
-        self.alpha = 0
-        self.error_tolerance = 0
-        self.reduced_order = 0
+        self.alpha = 0.1
+        self.error_tolerance = 0.1
+        self.reduced_order = 15
         self.A = 0
         self.B = 0
         self.C = 0
         self.D = 0
         self.start_time = 0
+        self.inputs = 0
+        self.isPartData = False
 
 
     def switch(self, option_number):
@@ -48,19 +50,21 @@ class Menu:
 
     def option_4(self):
         self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
+        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_part_data_inputs')
         self.reduced_order = 15
+        self.isPartData = True
 
     def option_5(self):
         self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
+        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_data_inputs')
         self.reduced_order = 50
+        self.isPartData = False
 
     def option_6(self):
         order = np.shape(self.A)[0]
 
-        self.alpha = 0.1
-
         while order > self.reduced_order:
-            A_r, B_r, C_r, D_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha)
+            A_r, B_r, C_r, D_r, states_r = modalTruncationAlgorithm.algorithm(self.A, self.B, self.C, self.D, self.alpha, self.inputs)
             self.A = A_r
             self.B = B_r
             self.C = C_r
@@ -71,15 +75,24 @@ class Menu:
         self.reduced_order = np.shape(A_r)[0]
         print("Final execution time: %s seconds" % (time.time() - self.start_time))
         print("Reduced order: %i" % self.reduced_order)
-        Csv.transformMatrixToCVS(A_r, "A_spectralProjection")
-        Csv.transformMatrixToCVS(B_r, "B_spectralProjection")
-        Csv.transformMatrixToCVS(C_r, "C_spectralProjection")
-        Csv.transformMatrixToCVS(D_r, "D_spectralProjection")
+
+        if self.isPartData:
+            Csv.transformMatrixToCVS(A_r, "part_A_spectralProjection")
+            Csv.transformMatrixToCVS(B_r, "part_B_spectralProjection")
+            Csv.transformMatrixToCVS(C_r, "part_C_spectralProjection")
+            Csv.transformMatrixToCVS(D_r, "part_D_spectralProjection")
+            Csv.transformMatrixToCVS(states_r, "part_states_spectralProjection")
+
+        else:
+            Csv.transformMatrixToCVS(A_r, "A_spectralProjection")
+            Csv.transformMatrixToCVS(B_r, "B_spectralProjection")
+            Csv.transformMatrixToCVS(C_r, "C_spectralProjection")
+            Csv.transformMatrixToCVS(D_r, "D_spectralProjection")
+            Csv.transformMatrixToCVS(states_r, "states_spectralProjection")
 
     def option_e(self):
         print("Bye!")
         self.loop = False
-
 
 if __name__ == "__main__":
     main_menu = Menu()

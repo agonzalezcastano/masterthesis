@@ -13,6 +13,6 @@ class LinearSystem:
         self.initial_states = initial_states
 
 def solveLinearSystem(G_r: LinearSystem):
-    states_r = np.dot(linalg.inv(G_r.A), -np.dot(G_r.B, G_r.inputs))
+    states_r = np.dot(linalg.pinv(G_r.A), -np.dot(G_r.B, G_r.inputs))
 
     return states_r
