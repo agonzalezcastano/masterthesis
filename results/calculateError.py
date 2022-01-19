@@ -23,7 +23,7 @@ def inf_norm_error(A, A_r):
 def steady_state_error(initial_output, inputs, C_r, D_r, states_r):
     error =  initial_output - (np.dot(C_r, states_r) - np.dot(D_r, inputs))
 
-    error_max = np.max(np.real(error))
+    error_max = np.max(np.absolute(np.real(error)))
     error_min = np.min(np.absolute(np.real(error)))
     
     print("Output steady-state error (vector): ")
