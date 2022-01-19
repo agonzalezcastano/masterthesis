@@ -1,6 +1,5 @@
 import projectionMatrix
 import reducedSystem
-import reducedMatrix
 import interpolationPoints
 import numpy.linalg as linalg
 import numpy as np
@@ -27,6 +26,7 @@ def algorithm(A, B, C, D, inputs, n_inter_points, error_tolerance):
         k = k + 1
 
     # solve linear system to obtain the reduced states
-    states_r = np.dot(linalg.pinv(A_r), -np.dot(B_r, inputs))
+    states_r = -np.dot(linalg.pinv(A_r), np.dot(B_r, inputs))
+    states_r = np.imag(states_r)
 
     return A_r, B_r, C_r, D_r, states_r

@@ -1,7 +1,7 @@
-%First, the file struct_ieee34 and struct_ieee34_part must be uploaded to
-%matlab
+%First, the file struct_ieee34 and/or struct_ieee34_part must be uploaded to
+%matlab.
 % Both of these file contain a variable called test, from where the
-% information is extracted
+% information is extracted.
 
 A = test.A;
 B = test.B;

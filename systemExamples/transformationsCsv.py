@@ -9,8 +9,8 @@ class Csv:
         cols = np.shape(numpy_array)[1]
         result = np.ndarray((rows, cols), dtype = "float")
 
-        for x in range(0, cols - 1):
-            for y in range(0, rows - 1):
+        for x in range(0, cols):
+            for y in range(0, rows):
                 result[y][x] = float(numpy_array[y,x])
 
         return result
@@ -21,7 +21,7 @@ class Csv:
         rows = np.shape(numpy_array)[0]
         result = np.ndarray((rows, 1), dtype = "complex")
 
-        for x in range(0, rows - 1):
+        for x in range(0, rows):
             numpy_array[x] = numpy_array[x].replace('i', 'j')
             result[x] = complex(numpy_array[x])
 
