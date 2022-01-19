@@ -40,22 +40,19 @@ def decomposition(G_1: LinearSystem):
         B_d = np.dot(W_inv, B_t)
         C_d = np.dot(C_t, W)
         D_d = G_1.D
-        initial_states_d = np.dot(W_inv, G_1.initial_states)
-        inputs_d = G_1.inputs
+        states_d = np.dot(W_inv, G_1.initial_states)
 
         A_s = A_d[:n_stable, :n_stable]
         B_s = B_d[:n_stable, :]
         C_s = C_d[:, :n_stable]
         D_s = D_d
-        initial_states_s = initial_states_d[:n_stable, :]
-        inputs_s = inputs_d
+        states_s = states_d[:n_stable, :]
 
         projection = np.identity(np.shape(A_s)[0])
-        eigvals_2 = linalg.eig(A_s)[0]
-        projection = projection * eigvals_2
-        inputs_s = inputs_s
-        initial_states_s = np.dot(projection, initial_states_s)
+        #eigvals_2 = linalg.eig(A_s)[0]
+        #projection = projection * eigvals_2
+        #states_s = np.dot(projection, states_s)
 
-        G_2 = LinearSystem(A_s, B_s, C_s, D_s, inputs_s, initial_states_s)
+        G_2 = LinearSystem(A_s, B_s, C_s, D_s, G_1.inputs, states_s)
 
     return G_2, projection

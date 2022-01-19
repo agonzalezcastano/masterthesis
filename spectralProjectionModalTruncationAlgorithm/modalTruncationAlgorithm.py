@@ -4,10 +4,12 @@ import beta
 import sylvesterEquation
 import rankRevealingQR
 import numpy as np
+import scipy.linalg as linalg
 
-def algorithm(A: np.ndarray, B: np.ndarray, C: np.ndarray, D: np.ndarray, alpha: np.ndarray):
+def algorithm(A: np.ndarray, B: np.ndarray, C: np.ndarray, D: np.ndarray, alpha: np.ndarray, inputs: np.ndarray):
     P = spectralProjection.calculateSpectralProjection(A, alpha)
     Q = rankRevealingQR.calculateRankRevealingQ(P)
+
     A_11, A_12, A_21, A_22 = blockTriangular.computeBlockTriangularA(A, Q)
     B_1, B_2 = blockTriangular.computeBlockTriangularB(B, Q)
     C_1, C_2 = blockTriangular.computeBlockTriangularC(C, Q)
@@ -20,5 +22,9 @@ def algorithm(A: np.ndarray, B: np.ndarray, C: np.ndarray, D: np.ndarray, alpha:
     B_r = B_1 - X.dot(B_2)
     C_r = C_1
     D_r = D
+
+    # solve linear system to obtain the reduced states
+    states_r = -np.dot(linalg.pinv(A_r), np.dot(B_r, inputs))
+    states_r = np.imag(states_r)
     
-    return A_r, B_r, C_r, D_r
+    return A_r, B_r, C_r, D_r, states_r

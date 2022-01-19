@@ -5,7 +5,7 @@ from linearSystem import LinearSystem
 import accuracy
 import decompositionSystem
 
-def algorithm(A, B, C, D, inputs, initial_states, reduced_order, states_max, delta_max, error_tolerance):
+def algorithm(A, B, C, D, inputs, initial_output, initial_states, reduced_order, states_max, delta_max, error_tolerance):
     states = initial_states
     G_1 = LinearSystem(A, B, C, D, inputs, states)
     G_1_stable, projection = extractStableSystem(G_1, reduced_order)
@@ -24,17 +24,17 @@ def algorithm(A, B, C, D, inputs, initial_states, reduced_order, states_max, del
         G_r_2: LinearSystem = reduction(G_1_stable, H)
         states_r = linearSystem.solveLinearSystem(G_r_2)
         p_r_2 = np.dot(G_r_2.C, states_r)
-        if accuracy.isErrorBoundSatisfied(G_r_2.C, states_r, G_1_stable.C, G_1_stable.initial_states, error_tolerance):
-            return G_r_2.A, G_r_2.B, G_r_2.C, G_r_2.D, G_r_2.inputs, states_r
+        if accuracy.isErrorBoundSatisfied(initial_output, G_r_2.C, states_r, delta_max, error_tolerance):
+            return G_r_2.A, G_r_2.B, G_r_2.C, G_r_2.D, states_r, reduced_order
         else:
             reduced_order = reduced_order + 1
     
-    return G_r_2.A, G_r_2.B, G_r_2.C, G_r_2.D, G_r_2.inputs, states_r
+    return G_r_2.A, G_r_2.B, G_r_2.C, G_r_2.D, states_r, reduced_order
 
 def extractStableSystem(G : LinearSystem, reduced_order):
-    A  = G.A
-    B  = G.B
-    C  = G.C
+    A = G.A
+    B = G.B
+    C = G.C
     D = G.D
     inputs  = G.inputs
     initial_states  = G.initial_states
@@ -53,7 +53,6 @@ def extractStableSystem(G : LinearSystem, reduced_order):
         C_stable = G_s.C
         D_stable = G_s.D
         initial_states_stable = G_s.initial_states
-        inputs_stable = G_s.inputs
     if n_unstable == 0:
         # System is stable
         A_stable = A
@@ -61,10 +60,9 @@ def extractStableSystem(G : LinearSystem, reduced_order):
         C_stable = C
         D_stable = D
         initial_states_stable = initial_states
-        inputs_stable = inputs
         projection = np.identity(np.size(A))
 
-    G_stable = LinearSystem(A_stable, B_stable, C_stable, D_stable, inputs_stable, initial_states_stable)
+    G_stable = LinearSystem(A_stable, B_stable, C_stable, D_stable, inputs, initial_states_stable)
 
     return G_stable, projection
 
@@ -74,11 +72,9 @@ def reduction(G_stable: LinearSystem, H: np.ndarray):
     B_r = np.dot(H, G_stable.B)
     C_r = np.dot(G_stable.C, H_inv)
     D_r = G_stable.D
+    states_r = np.dot(H, G_stable.initial_states)
 
-    states = np.dot(H, G_stable.initial_states)
-    inputs = G_stable.inputs
-
-    G_r = LinearSystem(A_r, B_r, C_r, D_r, inputs, states)
+    G_r = LinearSystem(A_r, B_r, C_r, D_r, G_stable.inputs, states_r)
     return G_r
 
 def solveLyapunovEquations(A, C):
