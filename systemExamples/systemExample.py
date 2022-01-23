@@ -18,3 +18,11 @@ class SystemExample:
         D = Csv.transformCsvToMatrix('ieee34_data_D')
 
         return A, B, C, D
+
+    def setDataIEEE123SystemExample():
+        A = Csv.transformCsvToMatrix('ieee123_data_A')
+        B = Csv.transformCsvToMatrix('ieee123_data_B')
+        C = Csv.transformCsvToMatrix('ieee123_data_C')
+        D = Csv.transformCsvToMatrix('ieee123_data_D')
+
+        return A, B, C, D

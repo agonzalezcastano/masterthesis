@@ -27,6 +27,6 @@ class Csv:
 
         return result
     
-    def transformMatrixToCVS(A: np.ndarray, matrixName):
-        np.savetxt("../results/ieee34_reduced_" + matrixName + ".csv", A, fmt="%f", delimiter=",")
+    def transformMatrixToCVS(A: np.ndarray, systemName, matrixName):
+        np.savetxt("../results/" + systemName + "_reduced_" + matrixName + ".csv", A, fmt="%f", delimiter=",")
 

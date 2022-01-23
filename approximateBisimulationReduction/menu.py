@@ -1,5 +1,6 @@
 from math import pi
 import sys
+from approximateBisimulationReduction.saveOutputData import saveIEEE34DataIntoMatrix
 
 sys.path.append('../')
 from systemExamples.systemExample import SystemExample
@@ -8,13 +9,14 @@ import approximateBisimulation
 from timeit import default_timer as timer
 from saveOutputData import saveDataIntoMatrix
 import results.calculateError as calculateError
+import numpy as np
 
 class Menu:
     def __init__(self):
         self.loop = True
         self.reduced_order = 0
         self.x_max = 0.1
-        self.delta_max = pi/2
+        self.delta_max = 0.1
         self.error_tolerance = 0.1
         self.A = 0
         self.B = 0
@@ -24,6 +26,7 @@ class Menu:
         self.initial_states = 0
         self.start_time = 0
         self.isPartData = False
+        self.isIEEE34 = False
 
 
     def switch(self, option_number):
@@ -36,12 +39,13 @@ class Menu:
         print("2. Set the error tolerance (e)")
         print("3. Set the accuray level (x max)")
         print("4. Set the maximun difference between two rotor angles (delta max)")
-        print("5. Set the IEEE34 partial data system")
-        print("6. Set the IEEE34 system")
-        print("7. Execute Approximate Bisimulation Reduction algorithm")
+        print("5. Set the IEEE 34 partial data system")
+        print("6. Set the IEEE 34 system")
+        print("7. Set the IEEE 123 system")
+        print("8. Execute Approximate Bisimulation Reduction algorithm")
         print("e. Exit")
         print(71 * "-")
-        option_choice = input("Enter an option [1-7/e]: ")
+        option_choice = input("Enter an option [1-8/e]: ")
         print("Option " + option_choice + " chosen")
         return option_choice
 
@@ -67,6 +71,7 @@ class Menu:
         self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_part_data_initial_states')
         self.output = Csv.transformComplexCsvToMatrix('ieee34_part_data_output')
         self.isPartData = True
+        self.isIEEE34 = True
 
     def option_6(self):
         self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
@@ -74,15 +79,41 @@ class Menu:
         self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_data_initial_states')
         self.output = Csv.transformComplexCsvToMatrix('ieee34_data_output')
         self.isPartData = False
-
+        self.isIEEE34 = True
+    
     def option_7(self):
+        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE123SystemExample()
+        self.inputs = Csv.transformComplexCsvToMatrix('ieee123_data_inputs')
+        self.initial_states = Csv.transformComplexCsvToMatrix('ieee123_data_initial_states')
+        self.output = Csv.transformComplexCsvToMatrix('ieee123_data_output')
+        self.isIEEE34 = False
+
+    def option_8(self):
         start = timer()
         A_r, B_r, C_r, D_r, states_r, reduced_order = approximateBisimulation.algorithm(
             self.A, self.B, self.C, self.D, self.inputs, self.output, self.initial_states, self.reduced_order, self.x_max, self.delta_max, self.error_tolerance)
         print("Execution time: %s seconds" % (timer() - start))
         print("Reduced order: %i" % reduced_order)
-        calculateError.steady_state_error(self.output, self.inputs, C_r, D_r, states_r)
-        saveDataIntoMatrix(self.isPartData, A_r, B_r, C_r, D_r, states_r)
+
+        output = np.dot(C_r, states_r) - np.dot(D_r, self.inputs)
+        steady_state_error = calculateError.steady_state_error(self.output, output)
+        print("Steady-state error vector: ")
+        print(steady_state_error)
+
+        if self.isIEEE34:
+            calculateError.print_relative_error_IEEE34_bus_800(self.output, output)
+            calculateError.print_relative_error_IEEE34_bus_812(self.output, output)
+            calculateError.print_relative_error_IEEE34_bus_830(self.output, output)
+            calculateError.print_relative_error_IEEE34_bus_836(self.output, output)
+            calculateError.print_relative_error_IEEE34_bus_846(self.output, output)
+            saveIEEE34DataIntoMatrix(self.isPartData, "ieee34", A_r, B_r, C_r, D_r, states_r)
+        else:
+            calculateError.print_relative_error_IEEE123_bus_30(self.output, output)
+            calculateError.print_relative_error_IEEE123_bus_60(self.output, output)
+            calculateError.print_relative_error_IEEE123_bus_83(self.output, output)
+            calculateError.print_relative_error_IEEE123_bus_95(self.output, output)
+            calculateError.print_relative_error_IEEE123_bus_151(self.output, output)
+            saveDataIntoMatrix("ieee123", A_r, B_r, C_r, D_r, states_r)
 
     def option_e(self):
         print("Bye!")

@@ -13,7 +13,7 @@ def calculateProjectionMatrixV(A: np.ndarray, B: np.ndarray, interpolation_point
     A_height = A.shape[0]
     I = np.identity(A_height)
     V_weight = np.shape(B)[1] * np.shape(interpolation_points)[0]
-    V: np.ndarray = np.zeros((A_height, V_weight))
+    V: np.ndarray = np.zeros((A_height, V_weight), dtype='complex')
     k = 0
 
     for num in range(0, np.shape(interpolation_points)[0], 1):
@@ -27,6 +27,8 @@ def calculateProjectionMatrixV(A: np.ndarray, B: np.ndarray, interpolation_point
         for i in range(1, np.shape(B)[1], 1):
             V[:, k + i] = v_temp[:, i]
         k = num + 2
+        
+    V = np.real(V)
     return V
 
 def calculateProjectionMatrixZ(Q: np.ndarray, V: np.ndarray):
