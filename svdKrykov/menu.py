@@ -1,5 +1,5 @@
+import cmath
 import sys
-from svdKrykov.saveOutputData import saveIEEE34DataIntoMatrix
 sys.path.append('../')
 from systemExamples.systemExample import SystemExample
 from systemExamples.transformationsCsv import Csv
@@ -7,13 +7,14 @@ import interactiveSvdKrylov
 from timeit import default_timer as timer
 import numpy as np
 from saveOutputData import saveDataIntoMatrix
+from saveOutputData import saveIEEE34DataIntoMatrix
 import results.calculateError as calculateError
 
 class Menu:
     def __init__(self):
         self.loop = True
         self.interpolation_points = 0
-        self.error_tolerance = 0.1
+        self.error_tolerance = 10
         self.reduced_order = 0
         self.A = 0
         self.B = 0
@@ -77,20 +78,17 @@ class Menu:
         self.initial_states = Csv.transformComplexCsvToMatrix('ieee123_data_initial_states')
         self.output = Csv.transformComplexCsvToMatrix('ieee123_data_output')
         self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
-        self.isIEEE34 = True
+        self.isIEEE34 = False
 
     def option_6(self):
         start = timer()
         A_r, B_r, C_r, D_r, states_r = interactiveSvdKrylov.algorithm(
-            self.A, self.B, self.C, self.D, self.inputs, self.interpolation_points, self.error_tolerance)
+            self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.interpolation_points, self.error_tolerance, self.reduced_order)
         self.reduced_order = np.shape(A_r)[0]
         print("Execution time: %s seconds" % (timer() - start))
         print("Reduced order: %i" % self.reduced_order)
 
-        output = np.dot(C_r, states_r) - np.dot(D_r, self.inputs)
-        steady_state_error = calculateError.steady_state_error(self.output, output)
-        print("Steady-state error vector: ")
-        print(steady_state_error)
+        output = np.dot(C_r, states_r) + np.dot(D_r, self.inputs)
 
         if self.isIEEE34:
             calculateError.print_relative_error_IEEE34_bus_800(self.output, output)
@@ -98,14 +96,14 @@ class Menu:
             calculateError.print_relative_error_IEEE34_bus_830(self.output, output)
             calculateError.print_relative_error_IEEE34_bus_836(self.output, output)
             calculateError.print_relative_error_IEEE34_bus_846(self.output, output)
-            saveIEEE34DataIntoMatrix(self.isPartData, "ieee34", A_r, B_r, C_r, D_r, states_r)
+            saveIEEE34DataIntoMatrix(self.isPartData, "ieee34", A_r, B_r, C_r, D_r, states_r, output)
         else:
             calculateError.print_relative_error_IEEE123_bus_30(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_60(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_83(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_95(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_151(self.output, output)
-            saveDataIntoMatrix("ieee123", A_r, B_r, C_r, D_r, states_r)
+            saveDataIntoMatrix("ieee123", A_r, B_r, C_r, D_r, states_r, output)
 
     def option_e(self):
         print("Bye!")

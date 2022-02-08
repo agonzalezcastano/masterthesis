@@ -44,6 +44,8 @@ def extractStableSystem(G : LinearSystem, reduced_order):
 
     if n_unstable > reduced_order:
         print('Dimension of the reduced-order model must be greater than the dimension of the unstable subsystem of G')
+        print('Dimension of the unstable system is: ')
+        print(n_unstable)
     if n_unstable <= reduced_order:
         # System is unstable
         # Extraction of the stable subsystem

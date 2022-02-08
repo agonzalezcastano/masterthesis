@@ -1,11 +1,12 @@
+import cmath
 import sys
-from spectralProjectionModalTruncationAlgorithm.saveOutputData import saveDataIntoMatrix
 sys.path.append('../')
 from systemExamples.systemExample import SystemExample
 from systemExamples.transformationsCsv import Csv
 import modalTruncationAlgorithm
 import numpy as np
 from timeit import default_timer as timer
+from saveOutputData import saveDataIntoMatrix
 from saveOutputData import saveIEEE34DataIntoMatrix
 import results.calculateError as calculateError
 
@@ -84,18 +85,15 @@ class Menu:
 
         while order > self.reduced_order:
             start = timer()
-            A_r, B_r, C_r, D_r, states_r = modalTruncationAlgorithm.algorithm(A_r, B_r, C_r, D_r, self.alpha, self.inputs)
+            A_r, B_r, C_r, D_r, states_r = modalTruncationAlgorithm.algorithm(A_r, B_r, C_r, D_r, self.inputs, self.initial_states, self.alpha, self.reduced_order)
             order = np.shape(A_r)[0]
             print("Execution time per algorithm execution: %f seconds" % (timer() - start))
     
         end = timer()
         print("Final execution time: %f seconds" % (end - start1))
         print("Reduced order: %i" % order)
-        
-        output = np.dot(C_r, states_r) - np.dot(D_r, self.inputs)
-        steady_state_error = calculateError.steady_state_error(self.output, output)
-        print("Steady-state error vector: ")
-        print(steady_state_error)
+
+        output = np.dot(C_r, states_r) + np.dot(D_r, self.inputs)
 
         if self.isIEEE34:
             calculateError.print_relative_error_IEEE34_bus_800(self.output, output)
@@ -103,15 +101,14 @@ class Menu:
             calculateError.print_relative_error_IEEE34_bus_830(self.output, output)
             calculateError.print_relative_error_IEEE34_bus_836(self.output, output)
             calculateError.print_relative_error_IEEE34_bus_846(self.output, output)
-            saveIEEE34DataIntoMatrix(self.isPartData, "ieee34", A_r, B_r, C_r, D_r, states_r)
+            saveIEEE34DataIntoMatrix(self.isPartData, "ieee34", A_r, B_r, C_r, D_r, states_r, output)
         else:
             calculateError.print_relative_error_IEEE123_bus_30(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_60(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_83(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_95(self.output, output)
             calculateError.print_relative_error_IEEE123_bus_151(self.output, output)
-            saveDataIntoMatrix("ieee123", A_r, B_r, C_r, D_r, states_r)
-
+            saveDataIntoMatrix("ieee123", A_r, B_r, C_r, D_r, states_r, output)
 
     def option_e(self):
         print("Bye!")

@@ -30,3 +30,6 @@ class Csv:
     def transformMatrixToCVS(A: np.ndarray, systemName, matrixName):
         np.savetxt("../results/" + systemName + "_reduced_" + matrixName + ".csv", A, fmt="%f", delimiter=",")
 
+    def transformComplexMatrixToCVS(A: np.ndarray, systemName, matrixName):
+        np.savetxt("../results/" + systemName + "_reduced_" + matrixName + ".csv", A, delimiter=",")
+

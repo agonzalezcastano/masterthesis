@@ -49,9 +49,6 @@ def decomposition(G_1: LinearSystem):
         states_s = states_d[:n_stable, :]
 
         projection = np.identity(np.shape(A_s)[0])
-        #eigvals_2 = linalg.eig(A_s)[0]
-        #projection = projection * eigvals_2
-        #states_s = np.dot(projection, states_s)
 
         G_2 = LinearSystem(A_s, B_s, C_s, D_s, G_1.inputs, states_s)
 

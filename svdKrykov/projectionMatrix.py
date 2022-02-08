@@ -28,7 +28,7 @@ def calculateProjectionMatrixV(A: np.ndarray, B: np.ndarray, interpolation_point
             V[:, k + i] = v_temp[:, i]
         k = num + 2
         
-    V = np.real(V)
+    V = np.imag(V)
     return V
 
 def calculateProjectionMatrixZ(Q: np.ndarray, V: np.ndarray):
