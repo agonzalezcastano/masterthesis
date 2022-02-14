@@ -13,7 +13,7 @@ import results.calculateError as calculateError
 class Menu:
     def __init__(self):
         self.loop = True
-        self.alpha = 0.1
+        self.alpha = 0.00001
         self.reduced_order = 0
         self.A = 0
         self.B = 0

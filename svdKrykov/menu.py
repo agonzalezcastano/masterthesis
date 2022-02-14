@@ -13,7 +13,7 @@ import results.calculateError as calculateError
 class Menu:
     def __init__(self):
         self.loop = True
-        self.interpolation_points = 0
+        self.interpolation_points = 2
         self.error_tolerance = 10
         self.reduced_order = 0
         self.A = 0
@@ -68,7 +68,7 @@ class Menu:
         self.inputs = Csv.transformComplexCsvToMatrix('ieee34_data_inputs')
         self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_data_initial_states')
         self.output = Csv.transformComplexCsvToMatrix('ieee34_data_output')
-        self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
+        #self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
         self.isPartData = False
         self.isIEEE34 = True
 
