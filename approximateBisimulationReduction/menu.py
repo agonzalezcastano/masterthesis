@@ -14,7 +14,7 @@ class Menu:
     def __init__(self):
         self.loop = True
         self.reduced_order = 0
-        self.x_max = 10000
+        self.x_max = 10
         self.delta_max = 100
         self.error_tolerance = 0.1
         self.A = 0
