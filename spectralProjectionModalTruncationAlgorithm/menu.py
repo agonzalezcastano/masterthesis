@@ -13,7 +13,7 @@ import results.calculateError as calculateError
 class Menu:
     def __init__(self):
         self.loop = True
-        self.alpha = 0.00001
+        self.alpha = 0.1
         self.reduced_order = 0
         self.A = 0
         self.B = 0
@@ -96,11 +96,15 @@ class Menu:
         output = np.dot(C_r, states_r) + np.dot(D_r, self.inputs)
 
         if self.isIEEE34:
-            calculateError.print_relative_error_IEEE34_bus_800(self.output, output)
-            calculateError.print_relative_error_IEEE34_bus_812(self.output, output)
-            calculateError.print_relative_error_IEEE34_bus_830(self.output, output)
-            calculateError.print_relative_error_IEEE34_bus_836(self.output, output)
-            calculateError.print_relative_error_IEEE34_bus_846(self.output, output)
+            if self.isPartData:
+                calculateError.print_relative_error_IEEE34_part_bus_800(self.output, output)
+                calculateError.print_relative_error_IEEE34_part_bus_812(self.output, output)
+            else:
+                calculateError.print_relative_error_IEEE34_bus_800(self.output, output)
+                calculateError.print_relative_error_IEEE34_bus_812(self.output, output)
+                calculateError.print_relative_error_IEEE34_bus_830(self.output, output)
+                calculateError.print_relative_error_IEEE34_bus_836(self.output, output)
+                calculateError.print_relative_error_IEEE34_bus_846(self.output, output)
             saveIEEE34DataIntoMatrix(self.isPartData, "ieee34", A_r, B_r, C_r, D_r, states_r, output)
         else:
             calculateError.print_relative_error_IEEE123_bus_30(self.output, output)

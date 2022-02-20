@@ -5,37 +5,28 @@
 % Also is necessary to have previously executed the obtain_reduced_state_space_matrices.m file
 % as part of the information is extracted from the variables created with it.
 
-eigA = eig(test.A);
+eigA = eig(A);
 
 subplot(1,2,1)
 plot(real(eigA),imag(eigA),'ko')
-title('Eigenvalues of the original system')
+title('Original Eigenvalues')
 xlabel('Real')
 ylabel('Imaginary')
+xlim([-6e7 3e7])
+ylim([-4e04 4e04])
 
-eigA_spectral = eig(A_var_spectral_projection);
+eigA_spectral = eig(A_spectral_projection);
 subplot(1,2,2)
-%hold on
 plot(real(eigA_spectral),imag(eigA_spectral),'rx')
-%title('Eigenvalues of the original system vs. Eigenvalues of the Spectral Projection Reduced System')
-%xlabel('Real')
-%ylabel('Imaginary')
 
-eigA_svd = eig(A_var_svdkrylov);
-%subplot(1,2,2)
-%plot(real(eigA),imag(eigA),'ko')
+eigA_svd = eig(A_svdkrylov);
 hold on
 plot(real(eigA_svd),imag(eigA_svd),'kx')
-%title('Eigenvalues of the original system vs. Eigenvalues of the SVD-Krylov Reduced System')
-%xlabel('Real')
-%ylabel('Imaginary')
 
-eigA_approx = eig(A_var_approx_bisimulation);
-%subplot(1,2,2)
-%plot(real(eigA),imag(eigA),'ko')
+eigA_approx = eig(A_approx_bisimulation);
 hold on
 plot(real(eigA_approx),imag(eigA_approx),'bx')
 title('Reduced Eigenvalues')
-%title('Eigenvalues of the original system vs. Eigenvalues of the Approximation Bisimulation Reduced System')
 xlabel('Real')
-ylabel('Imaginary')
+xlim([-6e7 3e7])
+ylim([-4e04 4e04])

@@ -1,5 +1,3 @@
-from numpy import ndarray
-import decomposeMatrix
 import scipy.linalg as la
 import numpy as np
 

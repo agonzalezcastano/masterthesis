@@ -12,6 +12,56 @@ def steady_state_error(initial_output, output):
     error =  initial_output - output
     return error
 
+def print_relative_error_IEEE34_part_bus_800(initial_output, output):
+    relative_error_voltage_A_bus_800 = relative_error(initial_output[4], output[4])
+    print("Relative error voltage A bus 800: ")
+    print(relative_error_voltage_A_bus_800)
+
+    relative_error_voltage_B_bus_800 = relative_error(initial_output[5], output[5])
+    print("Relative error voltage B bus 800: ")
+    print(relative_error_voltage_B_bus_800)
+
+    relative_error_voltage_C_bus_800 = relative_error(initial_output[6], output[6])
+    print("Relative error voltage C bus 800: ")
+    print(relative_error_voltage_C_bus_800)
+
+    relative_error_current_A_bus_800 = relative_error(initial_output[10], output[10])
+    print("Relative error current A bus 800: ")
+    print(relative_error_current_A_bus_800)
+
+    relative_error_current_B_bus_800 = relative_error(initial_output[11], output[11])
+    print("Relative error current B bus 800: ")
+    print(relative_error_current_B_bus_800)
+
+    relative_error_current_C_bus_800 = relative_error(initial_output[12], output[12])
+    print("Relative error current C bus 800: ")
+    print(relative_error_current_C_bus_800)
+
+def print_relative_error_IEEE34_part_bus_812(initial_output, output):
+    relative_error_voltage_A_bus_812 = relative_error(initial_output[1], output[1])
+    print("Relative error voltage A bus 812: ")
+    print(relative_error_voltage_A_bus_812)
+
+    relative_error_voltage_B_bus_812 = relative_error(initial_output[2], output[2])
+    print("Relative error voltage B bus 812: ")
+    print(relative_error_voltage_B_bus_812)
+
+    relative_error_voltage_C_bus_812 = relative_error(initial_output[3], output[3])
+    print("Relative error voltage C bus 812: ")
+    print(relative_error_voltage_C_bus_812)
+
+    relative_error_current_A_bus_812 = relative_error(initial_output[7], output[7])
+    print("Relative error current A bus 812: ")
+    print(relative_error_current_A_bus_812)
+
+    relative_error_current_B_bus_812 = relative_error(initial_output[8], output[8])
+    print("Relative error current B bus 812: ")
+    print(relative_error_current_B_bus_812)
+
+    relative_error_current_C_bus_812 = relative_error(initial_output[9], output[9])
+    print("Relative error current C bus 812: ")
+    print(relative_error_current_C_bus_812)
+
 def print_relative_error_IEEE34_bus_800(initial_output, output):
     relative_error_voltage_A_bus_800 = relative_error(initial_output[10], output[10])
     print("Relative error voltage A bus 800: ")
