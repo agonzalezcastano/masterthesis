@@ -37,11 +37,6 @@ def reduction(G: LinearSystem, T, T_inv, k):
     C_r = G.C @ T_inv
     D_r = G.D
 
-    eig_vals, eig_vec = linalg.eig(A_r)
-    n_unstable = sum(np.real(eig_vals) >= 0)
-    print("n_unstable Ar")
-    print(n_unstable)
-
     G_r = LinearSystem(A_r, B_r, C_r, D_r, G.inputs, G.initial_states)
     return G_r
 
