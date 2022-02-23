@@ -46,7 +46,6 @@ class Menu:
         print(67 * "-")
         option_choice = input("Enter an option [1-7/e]: ")
         print("Option " + option_choice + " chosen")
-        self.option_choice = option_choice
         return option_choice
 
     def option_1(self):
@@ -61,19 +60,23 @@ class Menu:
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE34SystemExample()
         self.isPartData = True
         self.isIEEE34 = True
+        self.option_choice = 3
 
     def option_4(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE18SystemExample()
         self.isPartData = False
         self.isIEEE34 = True
+        self.option_choice = 4
 
     def option_5(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE7SystemExample()
         self.isIEEE34 = False
+        self.option_choice = 5
 
     def option_6(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE5SystemExample()
         self.isIEEE34 = False
+        self.option_choice = 6
 
     def option_7(self):
         start = timer()

@@ -48,7 +48,6 @@ class Menu:
         print(71 * "-")
         option_choice = input("Enter an option [1-9/e]: ")
         print("Option " + option_choice + " chosen")
-        self.option_choice = option_choice
         return option_choice
 
     def option_1(self):
@@ -71,19 +70,23 @@ class Menu:
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE34SystemExample()
         self.isPartData = True
         self.isIEEE34 = True
+        self.option_choice = 5
 
     def option_6(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE18SystemExample()
         self.isPartData = False
         self.isIEEE34 = True
+        self.option_choice = 6
     
     def option_7(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE7SystemExample()
         self.isIEEE34 = False
+        self.option_choice = 7
 
     def option_8(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE5SystemExample()
         self.isIEEE34 = False
+        self.option_choice = 8
 
     def option_9(self):
         start = timer()
@@ -93,7 +96,7 @@ class Menu:
         print("Reduced order: %i" % reduced_order)
 
         output = np.dot(C_r, states_r) + np.dot(D_r, self.inputs)
-        
+
         if self.option_choice == 5:
             saveDataIntoMatrix("ieee34", A_r, B_r, C_r, D_r, states_r, output)
         if self.option_choice == 6:
