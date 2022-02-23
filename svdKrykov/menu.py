@@ -36,13 +36,14 @@ class Menu:
         print(20 * "-", "SVD-Krylov Algorithm's Menu", 20 * "-")
         print("1. Set the reduced-order to be achieved (k)")
         print("2. Set the error tolerance (e)")
-        print("3. Set the IEEE 34 partial data system")
-        print("4. Set the IEEE 34 system")
-        print("5. Set the IEEE 123 system")
-        print("6. Execute Interactive SVD-Krylov reduction algorithm")
+        print("3. Set the IEEE 34 system")
+        print("4. Set the IEEE 18 system")
+        print("5. Set the IEEE 7 system")
+        print("6. Set the IEEE 5 system")
+        print("7. Execute Interactive SVD-Krylov reduction algorithm")
         print("e. Exit")
         print(67 * "-")
-        option_choice = input("Enter an option [1-6/e]: ")
+        option_choice = input("Enter an option [1-7/e]: ")
         print("Option " + option_choice + " chosen")
         return option_choice
 
@@ -55,32 +56,24 @@ class Menu:
         self.error_tolerance = float(self.error_tolerance)
 
     def option_3(self):
-        self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
-        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_part_data_inputs')
-        self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_part_data_initial_states')
-        self.output = Csv.transformComplexCsvToMatrix('ieee34_part_data_output')
-        self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE34SystemExample()
         self.isPartData = True
         self.isIEEE34 = True
 
     def option_4(self):
-        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
-        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_data_inputs')
-        self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_data_initial_states')
-        self.output = Csv.transformComplexCsvToMatrix('ieee34_data_output')
-        #self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE18SystemExample()
         self.isPartData = False
         self.isIEEE34 = True
 
     def option_5(self):
-        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE123SystemExample()
-        self.inputs = Csv.transformComplexCsvToMatrix('ieee123_data_inputs')
-        self.initial_states = Csv.transformComplexCsvToMatrix('ieee123_data_initial_states')
-        self.output = Csv.transformComplexCsvToMatrix('ieee123_data_output')
-        self.interpolation_points = int(self.reduced_order/np.shape(self.B)[1])
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE7SystemExample()
         self.isIEEE34 = False
 
     def option_6(self):
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE5SystemExample()
+        self.isIEEE34 = False
+
+    def option_7(self):
         start = timer()
         A_r, B_r, C_r, D_r, states_r = interactiveSvdKrylov.algorithm(
             self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.interpolation_points, self.error_tolerance, self.reduced_order)

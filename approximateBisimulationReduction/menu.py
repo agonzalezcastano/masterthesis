@@ -37,14 +37,15 @@ class Menu:
         print("1. Set the reduced-order to be achieved (k)")
         print("2. Set the error tolerance (e)")
         print("3. Set the accuray level (x max)")
-        print("4. Set the maximun difference between two rotor angles (delta max)")
-        print("5. Set the IEEE 34 partial data system")
-        print("6. Set the IEEE 34 system")
-        print("7. Set the IEEE 123 system")
-        print("8. Execute Approximate Bisimulation Reduction algorithm")
+        print("4. Set the maximun difference between two outputs (delta max)")
+        print("5. Set the IEEE 34 system")
+        print("6. Set the IEEE 18 system")
+        print("7. Set the IEEE 7 system")
+        print("8. Set the IEEE 5 system")
+        print("9. Execute Approximate Bisimulation Reduction algorithm")
         print("e. Exit")
         print(71 * "-")
-        option_choice = input("Enter an option [1-8/e]: ")
+        option_choice = input("Enter an option [1-9/e]: ")
         print("Option " + option_choice + " chosen")
         return option_choice
 
@@ -65,29 +66,24 @@ class Menu:
         self.delta_max = float(self.delta_max)
 
     def option_5(self):
-        self.A, self.B, self.C, self.D = SystemExample.setPartDataIEEE34SystemExample()
-        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_part_data_inputs')
-        self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_part_data_initial_states')
-        self.output = Csv.transformComplexCsvToMatrix('ieee34_part_data_output')
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE34SystemExample()
         self.isPartData = True
         self.isIEEE34 = True
 
     def option_6(self):
-        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE34SystemExample()
-        self.inputs = Csv.transformComplexCsvToMatrix('ieee34_data_inputs')
-        self.initial_states = Csv.transformComplexCsvToMatrix('ieee34_data_initial_states')
-        self.output = Csv.transformComplexCsvToMatrix('ieee34_data_output')
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE18SystemExample()
         self.isPartData = False
         self.isIEEE34 = True
     
     def option_7(self):
-        self.A, self.B, self.C, self.D = SystemExample.setDataIEEE123SystemExample()
-        self.inputs = Csv.transformComplexCsvToMatrix('ieee123_data_inputs')
-        self.initial_states = Csv.transformComplexCsvToMatrix('ieee123_data_initial_states')
-        self.output = Csv.transformComplexCsvToMatrix('ieee123_data_output')
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE7SystemExample()
         self.isIEEE34 = False
 
     def option_8(self):
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE5SystemExample()
+        self.isIEEE34 = False
+
+    def option_9(self):
         start = timer()
         A_r, B_r, C_r, D_r, states_r, reduced_order = approximateBisimulation.algorithm(
             self.A, self.B, self.C, self.D, self.inputs, self.output, self.initial_states, self.reduced_order, self.x_max, self.delta_max, self.error_tolerance)
