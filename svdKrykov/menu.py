@@ -24,8 +24,6 @@ class Menu:
         self.initial_states = 0
         self.output = 0
         self.start_time = 0
-        self.isPartData = False
-        self.isIEEE34 = False
         self.option_choice = 0
 
 
@@ -58,24 +56,18 @@ class Menu:
 
     def option_3(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE34SystemExample()
-        self.isPartData = True
-        self.isIEEE34 = True
         self.option_choice = 3
 
     def option_4(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE18SystemExample()
-        self.isPartData = False
-        self.isIEEE34 = True
         self.option_choice = 4
 
     def option_5(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE7SystemExample()
-        self.isIEEE34 = False
         self.option_choice = 5
 
     def option_6(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE5SystemExample()
-        self.isIEEE34 = False
         self.option_choice = 6
 
     def option_7(self):

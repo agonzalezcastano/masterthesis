@@ -6,7 +6,6 @@ from systemExamples.transformationsCsv import Csv
 import approximateBisimulation
 from timeit import default_timer as timer
 from saveOutputData import saveDataIntoMatrix
-from saveOutputData import saveIEEE34DataIntoMatrix
 import results.calculateError as calculateError
 import numpy as np
 
@@ -24,8 +23,6 @@ class Menu:
         self.inputs = 0
         self.initial_states = 0
         self.start_time = 0
-        self.isPartData = False
-        self.isIEEE34 = False
         self.option_choice = 0
 
 
@@ -68,24 +65,18 @@ class Menu:
 
     def option_5(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE34SystemExample()
-        self.isPartData = True
-        self.isIEEE34 = True
         self.option_choice = 5
 
     def option_6(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE18SystemExample()
-        self.isPartData = False
-        self.isIEEE34 = True
         self.option_choice = 6
     
     def option_7(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE7SystemExample()
-        self.isIEEE34 = False
         self.option_choice = 7
 
     def option_8(self):
         self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE5SystemExample()
-        self.isIEEE34 = False
         self.option_choice = 8
 
     def option_9(self):
