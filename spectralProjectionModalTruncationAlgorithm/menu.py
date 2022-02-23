@@ -25,6 +25,7 @@ class Menu:
         self.output = 0
         self.isPartData = False
         self.isIEEE34 = False
+        self.option_choice = 0
 
     def switch(self, option_number):
         default = "Invalid input. Please enter a number between 1 and 6 or exit."
@@ -43,6 +44,7 @@ class Menu:
         print(69 * "-")
         option_choice = input("Enter an option [1-7/e]: ")
         print("Option " + option_choice + " chosen")
+        self.option_choice = option_choice
         return option_choice
 
     def option_1(self):
@@ -91,24 +93,14 @@ class Menu:
 
         output = np.dot(C_r, states_r) + np.dot(D_r, self.inputs)
 
-        if self.isIEEE34:
-            if self.isPartData:
-                calculateError.print_relative_error_IEEE34_part_bus_800(self.output, output)
-                calculateError.print_relative_error_IEEE34_part_bus_812(self.output, output)
-            else:
-                calculateError.print_relative_error_IEEE34_bus_800(self.output, output)
-                calculateError.print_relative_error_IEEE34_bus_812(self.output, output)
-                calculateError.print_relative_error_IEEE34_bus_830(self.output, output)
-                calculateError.print_relative_error_IEEE34_bus_836(self.output, output)
-                calculateError.print_relative_error_IEEE34_bus_846(self.output, output)
-            saveIEEE34DataIntoMatrix(self.isPartData, "ieee34", A_r, B_r, C_r, D_r, states_r, output)
-        else:
-            calculateError.print_relative_error_IEEE123_bus_30(self.output, output)
-            calculateError.print_relative_error_IEEE123_bus_60(self.output, output)
-            calculateError.print_relative_error_IEEE123_bus_83(self.output, output)
-            calculateError.print_relative_error_IEEE123_bus_95(self.output, output)
-            calculateError.print_relative_error_IEEE123_bus_151(self.output, output)
-            saveDataIntoMatrix("ieee123", A_r, B_r, C_r, D_r, states_r, output)
+        if self.option_choice == 3:
+            saveDataIntoMatrix("ieee34", A_r, B_r, C_r, D_r, states_r, output)
+        if self.option_choice == 4:
+            saveDataIntoMatrix("ieee18", A_r, B_r, C_r, D_r, states_r, output)
+        if self.option_choice == 5:
+            saveDataIntoMatrix("ieee7", A_r, B_r, C_r, D_r, states_r, output)
+        if self.option_choice == 6:
+            saveDataIntoMatrix("ieee5", A_r, B_r, C_r, D_r, states_r, output)
 
     def option_e(self):
         print("Bye!")
