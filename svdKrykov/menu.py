@@ -82,12 +82,16 @@ class Menu:
 
         if self.option_choice == 3:
             saveDataIntoMatrix("ieee34", A_r, B_r, C_r, D_r, states_r, output)
+            calculateError.print_errors_IEEE34(self.output, output)
         if self.option_choice == 4:
             saveDataIntoMatrix("ieee18", A_r, B_r, C_r, D_r, states_r, output)
+            calculateError.print_errors_IEEE18(self.output, output)
         if self.option_choice == 5:
             saveDataIntoMatrix("ieee7", A_r, B_r, C_r, D_r, states_r, output)
+            calculateError.print_errors_IEEE7(self.output, output)
         if self.option_choice == 6:
             saveDataIntoMatrix("ieee5", A_r, B_r, C_r, D_r, states_r, output)
+            calculateError.print_errors_IEEE5(self.output, output)
 
     def option_e(self):
         print("Bye!")
