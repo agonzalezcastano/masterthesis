@@ -9,4 +9,4 @@ def saveDataIntoMatrix(systemName, A_r, B_r, C_r, D_r, states_r, output):
     Csv.transformMatrixToCVS(states_r, systemName, "states_approximateBisimulation")
     initial_states_r = imag(states_r)
     Csv.transformComplexMatrixToCVS(initial_states_r, systemName, "initial_states_approximateBisimulation")
-    Csv.transformMatrixToCVS(output, systemName, "_output_approximateBisimulation")
+    Csv.transformMatrixToCVS(output, systemName, "output_approximateBisimulation")
