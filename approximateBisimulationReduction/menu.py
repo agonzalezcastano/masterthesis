@@ -64,19 +64,19 @@ class Menu:
         self.delta_max = float(self.delta_max)
 
     def option_5(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE34SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE34SystemExample()
         self.option_choice = 5
 
     def option_6(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE18SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE18SystemExample()
         self.option_choice = 6
     
     def option_7(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE7SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE7SystemExample()
         self.option_choice = 7
 
     def option_8(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDataIEEE5SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE5SystemExample()
         self.option_choice = 8
 
     def option_9(self):
