@@ -13,13 +13,13 @@ ieee5_states_spectral_projection = readtable(strcat(path,strcat(ieee5_system_dat
 ieee5_initial_states_spectral_projection = readtable(strcat(path,strcat(ieee5_system_data,'initial_states_spectralProjection.csv')));
 ieee5_output_spectral_projection = readtable(strcat(path,strcat(ieee5_system_data,'output_spectralProjection.csv')));
 
-ieee5_A_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'A_svdKrylov.csv')));
-ieee5_B_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'B_svdKrylov.csv')));
-ieee5_C_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'C_svdKrylov.csv')));
-ieee5_D_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'D_svdKrylov.csv')));
-ieee5_states_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'states_svdKrylov.csv')));
-ieee5_initial_states_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'initial_states_svdKrylov.csv')));
-ieee5_output_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'output_svdKrylov.csv')));
+% ieee5_A_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'A_svdKrylov.csv')));
+% ieee5_B_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'B_svdKrylov.csv')));
+% ieee5_C_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'C_svdKrylov.csv')));
+% ieee5_D_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'D_svdKrylov.csv')));
+% ieee5_states_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'states_svdKrylov.csv')));
+% ieee5_initial_states_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'initial_states_svdKrylov.csv')));
+% ieee5_output_svdkrylov = readtable(strcat(path,strcat(ieee5_system_data,'output_svdKrylov.csv')));
 
 ieee5_A_approx_bisimulation = readtable(strcat(path,strcat(ieee5_system_data,'A_approximateBisimulation.csv')));
 ieee5_B_approx_bisimulation = readtable(strcat(path,strcat(ieee5_system_data,'B_approximateBisimulation.csv')));
@@ -37,13 +37,13 @@ ieee5_states_spectral_projection = table2array(ieee5_states_spectral_projection)
 ieee5_initial_states_spectral_projection = table2array(ieee5_initial_states_spectral_projection);
 ieee5_output_spectral_projection = table2array(ieee5_output_spectral_projection);
 
-ieee5_A_svdkrylov = table2array(ieee5_A_svdkrylov);
-ieee5_B_svdkrylov = table2array(ieee5_B_svdkrylov);
-ieee5_C_svdkrylov = table2array(ieee5_C_svdkrylov);
-ieee5_D_svdkrylov = table2array(ieee5_D_svdkrylov);
-ieee5_states_svdkrylov = table2array(ieee5_states_svdkrylov);
-ieee5_initial_states_svdkrylov = table2array(ieee5_initial_states_svdkrylov);
-ieee5_output_svdkrylov = table2array(ieee5_output_svdkrylov);
+% ieee5_A_svdkrylov = table2array(ieee5_A_svdkrylov);
+% ieee5_B_svdkrylov = table2array(ieee5_B_svdkrylov);
+% ieee5_C_svdkrylov = table2array(ieee5_C_svdkrylov);
+% ieee5_D_svdkrylov = table2array(ieee5_D_svdkrylov);
+% ieee5_states_svdkrylov = table2array(ieee5_states_svdkrylov);
+% ieee5_initial_states_svdkrylov = table2array(ieee5_initial_states_svdkrylov);
+% ieee5_output_svdkrylov = table2array(ieee5_output_svdkrylov);
 
 ieee5_A_approx_bisimulation = table2array(ieee5_A_approx_bisimulation);
 ieee5_B_approx_bisimulation = table2array(ieee5_B_approx_bisimulation);

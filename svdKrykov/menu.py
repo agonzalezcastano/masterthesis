@@ -54,19 +54,19 @@ class Menu:
         self.error_tolerance = float(self.error_tolerance)
 
     def option_3(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDiscreteDataIEEE34SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE34SystemExample()
         self.option_choice = 3
 
     def option_4(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDiscreteDataIEEE18SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE18SystemExample()
         self.option_choice = 4
 
     def option_5(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDiscreteDataIEEE7SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE7SystemExample()
         self.option_choice = 5
 
     def option_6(self):
-        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setDiscreteDataIEEE5SystemExample()
+        self.A, self.B, self.C, self.D, self.inputs, self.initial_states, self.output = SystemExample.setContinuousDataIEEE5SystemExample()
         self.option_choice = 6
 
     def option_7(self):
