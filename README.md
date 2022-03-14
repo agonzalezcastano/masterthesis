@@ -1,7 +1,7 @@
 Amparo Gonzalez Castaño - Master Thesis - Comparison of Model Order Reduction Methods for Power Grids
 #####
 Folders:
-- systemExamples: Contains the files that transform the state-spaces matrices inside the 'data' folder to matrices that python can use.
+- systemExamples: Contains the files that transform the state-spaces matrices inside the 'data' folder to python's matrices.
     - Data: Contains all the state-space matrices obtained from MATLAB of the following systems: IEEE34, IEEE18, IEEE7 and IEE5.
 
 - svdKrylovMethod: Contains all the files regarding the SVD-Krylov method.
